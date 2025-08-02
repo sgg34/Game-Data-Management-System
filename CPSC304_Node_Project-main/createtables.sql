@@ -175,14 +175,14 @@ INSERT INTO Ranking VALUES('RG00000005');
 
 
 
-INSERT INTO Player_Has_R1 VALUES ('A000000001', 200, 'AceHunter', 'RB00000001', 'S000000001', 10, 5, 15); 
-INSERT INTO Player_Has_R1 VALUES ('A000000002', 130, 'ShadowFury', 'RI00000001', 'S000000002', 6, 9, 15); 
-INSERT INTO Player_Has_R1 VALUES ('A000000003', 50, 'NovaStar', 'RI00000002', 'S000000003', 3, 2, 5);
-INSERT INTO Player_Has_R1 VALUES ('A000000004', 300, 'PixelCrush', 'RG00000001', 'S000000004', 16, 5, 21); 
-INSERT INTO Player_Has_R1 VALUES ('A000000005', 180, 'DragonX', 'RB0000003', 'S000000005', 8, 5, 13); 
-INSERT INTO Player_Has_R1 VALUES ('A000000006', 120, 'BlitzQueen', 'RI00000003', 'S000000006', 8, 8, 16); 
-INSERT INTO Player_Has_R1 VALUES ('A000000007', 90, 'SilentScope', 'RI00000004', 'S000000007', 2, 5, 7); 
-INSERT INTO Player_Has_R1 VALUES ('A000000008', 200, 'SkyBreaker', 'RS00000002', 'S000000007', 11, 5, 16); 
+INSERT INTO Player_Has_R1 VALUES ('A000000001', 200, 'AceHunter', 'RB00000001', 'S000000001', 10, 5); 
+INSERT INTO Player_Has_R1 VALUES ('A000000002', 130, 'ShadowFury', 'RI00000001', 'S000000002', 6, 9); 
+INSERT INTO Player_Has_R1 VALUES ('A000000003', 50, 'NovaStar', 'RI00000002', 'S000000003', 3, 2);
+INSERT INTO Player_Has_R1 VALUES ('A000000004', 300, 'PixelCrush', 'RG00000001', 'S000000004', 16, 5); 
+INSERT INTO Player_Has_R1 VALUES ('A000000005', 180, 'DragonX', 'RB00000003', 'S000000005', 8, 5); 
+INSERT INTO Player_Has_R1 VALUES ('A000000006', 120, 'BlitzQueen', 'RI00000003', 'S000000006', 8, 8); 
+INSERT INTO Player_Has_R1 VALUES ('A000000007', 90, 'SilentScope', 'RI00000004', 'S000000007', 2, 5); 
+INSERT INTO Player_Has_R1 VALUES ('A000000008', 200, 'SkyBreaker', 'RS00000002', 'S000000008', 11, 5); 
 
 INSERT INTO Player_Has_Avatar VALUES ('Sammie', 'A000000001'); 
 INSERT INTO Player_Has_Avatar VALUES ('Damien', 'A000000002'); 
@@ -203,11 +203,11 @@ INSERT INTO Plays VALUES (3, 'A000000003');
 INSERT INTO Plays VALUES (4, 'A000000004'); 
 INSERT INTO Plays VALUES (5, 'A000000005');
 
-INSERT INTO Reward Reward('Level Up', 50); 
-INSERT INTO Reward Reward('Rookie Reward', 60); 
-INSERT INTO Reward Reward('Veteran Bonus', 70); 
-INSERT INTO Reward Reward('100th round Milestone', 80); 
-INSERT INTO Reward Reward('Daily Streak Bonus', 90);
+INSERT INTO Reward VALUES('Level Up', 50); 
+INSERT INTO Reward VALUES('Rookie Reward', 60); 
+INSERT INTO Reward VALUES('Veteran Bonus', 70); 
+INSERT INTO Reward VALUES('100th round Milestone', 80); 
+INSERT INTO Reward VALUES('Daily Streak Bonus', 90);
 
 INSERT INTO Provides VALUES('Level Up','A000000001'); 
 INSERT INTO Provides VALUES('Rookie Reward','A000000002'); 
@@ -239,25 +239,25 @@ INSERT INTO Skill_R2 VALUES(20, 90);
 INSERT INTO Skill_R2 VALUES(30, 80); 
 INSERT INTO Skill_R2 VALUES(40, 70); 
 INSERT INTO Skill_R2 VALUES(50, 60); 
-INSERT INTO Skill_R2 VALUES(40, 50);
+INSERT INTO Skill_R2 VALUES(60, 50);
 
 INSERT INTO Attack VALUES('Punch', 40); 
-INSERT INTO Attack VALUES('Punch', 50); 
+INSERT INTO Attack VALUES('Strike', 50); 
 INSERT INTO Attack VALUES('Kick', 60); 
-INSERT INTO Attack VALUES('Kick', 70);
-INSERT INTO Attack VALUES('Kick', 80);
+INSERT INTO Attack VALUES('Jab', 70);
+INSERT INTO Attack VALUES('Slash', 80);
 
 INSERT INTO Defence VALUES('Guard', 40); 
-INSERT INTO Defence VALUES('Guard', 50); 
+INSERT INTO Defence VALUES('Wall', 50); 
 INSERT INTO Defence VALUES('Shield', 60); 
-INSERT INTO Defence VALUES('Shield', 70); 
-INSERT INTO Defence VALUES('Shield', 80);
+INSERT INTO Defence VALUES('Veil', 70); 
+INSERT INTO Defence VALUES('Barrier', 80);
 
 INSERT INTO Agility VALUES('Rapid Shift', 40); 
-INSERT INTO Agility VALUES('Rapid Shift', 50); 
+INSERT INTO Agility VALUES('Swiftstep', 50); 
 INSERT INTO Agility VALUES('Sidestep', 60); 
-INSERT INTO Agility VALUES('Sidestep', 70); 
-INSERT INTO Agility VALUES('Sidestep', 80);
+INSERT INTO Agility VALUES('Dash', 70); 
+INSERT INTO Agility VALUES('Spiral', 80);
 
 INSERT INTO Round_Provides VALUES(1, 'Level Up'); 
 INSERT INTO Round_Provides VALUES(2, 'Rookie Reward'); 
