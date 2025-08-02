@@ -222,6 +222,20 @@ INSERT INTO Skill_R1 VALUES('Shield', 40);
 INSERT INTO Skill_R1 VALUES('Rapid Shift',50); 
 INSERT INTO Skill_R1 VALUES('Sidestep', 40); 
 
+
+INSERT INTO Skill_R1 VALUES('Strike', 50);
+INSERT INTO Skill_R1 VALUES('Jab', 70);
+INSERT INTO Skill_R1 VALUES('Slash', 80);
+
+INSERT INTO Skill_R1 VALUES('Wall', 50); 
+INSERT INTO Skill_R1 VALUES('Veil', 70); 
+INSERT INTO Skill_R1 VALUES('Barrier', 80);
+
+INSERT INTO Skill_R1 VALUES('Swiftstep', 50); 
+INSERT INTO Skill_R1 VALUES('Dash', 70); 
+INSERT INTO Skill_R1 VALUES('Spiral', 80);
+
+
 INSERT INTO Turn_Has_R1 VALUES('A000000001', 1, 1, 50, 100, 'Punch'); 
 INSERT INTO Turn_Has_R1 VALUES('A000000002', 2, 2, 60, 140, 'Kick'); 
 INSERT INTO Turn_Has_R1 VALUES('A000000003', 3, 3, 70, 130, 'Guard'); 
