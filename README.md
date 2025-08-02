@@ -1,0 +1,8 @@
+# Description
+- The domain of our project is in entertainment, specifically one-to-one turn-based games. The database can model the following aspects of the game: the scoring and rewarding system, players’ statistics, skills in categories, and avatars. For example, similar games to Street Fighter and Slay the Spire could use the database to help implement their turns and track players’ statistics. In each turn, players can select skills from three main categories: attack, defence and agility, and obtain points according to the properties of the categories. For instance, the player who picked attack would lose more points from their health if the other player picked defence, and the damage would depend on the attribute ‘DamagePoints’ of the skill entity; the player who picked agility would lose more points if the other player picked attack, and agility beats defence. It is similar to rock, paper, scissors, where one move beats the other. The attribute ‘EffectPoints’ of the skill entity will add points to players’ health and is dependent on ‘DamagePoints’. The database would keep track of the categories of the skills, players’ information and the results of each round to update players’ statistics.
+
+# Challenges/Things Left to do
+- Queries: INSERT, Delete, Update, Selection, Projection, Join, Aggregation with Group By, Aggregation with Having, Nested Aggregation with GroupBy and Division
+- GUI design for the queries
+- It is our first time using SQL and Oracle, so we will try to work back and forth with implementing queries and GUI.
+- We are also unfamiliar with libraries that might be useful for GUI. 
