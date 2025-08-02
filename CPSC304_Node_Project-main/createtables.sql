@@ -1,1 +1,292 @@
-CREATE TABLE Avatar ( Name VARCHAR(50) PRIMARY KEY, Skin VARCHAR(50), Profile VARCHAR(50));
+CREATE TABLE Avatar ( 
+    Name VARCHAR(50) PRIMARY KEY, 
+    Skin VARCHAR(50), 
+    Profile VARCHAR(50));
+
+CREATE TABLE Player_Has_Avatar(
+    AvatarName VARCHAR(50) NOT NULL,
+    PlayerID CHAR(10), 
+    PRIMARY KEY (AvatarName, PlayerID), 
+    FOREIGN KEY (AvatarName) REFERENCES Avatar, 
+    FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
+
+CREATE TABLE Plays(
+    RoundNumber INTEGER, 
+    PlayerID CHAR(10), 
+    PRIMARY KEY (RoundNumber, PlayerID),
+    FOREIGN KEY (RoundNumber) REFERENCES Round, 
+    FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
+
+CREATE TABLE Round(
+    RoundNumber INTEGER PRIMARY KEY,
+    StartTime TIME, 
+    EndTime TIME, 
+    WinnerPlayerID CHAR(10));
+
+CREATE TABLE Provides (
+    RewardName VARCHAR(50), 
+    PlayerID CHAR(10), 
+    PRIMARY KEY(RewardName, PlayerID), 
+    FOREIGN KEY(RewardName) REFERENCES Reward, 
+    FOREIGN KEY(PlayerID) REFERENCES Player_Has_R1);
+
+CREATE TABLE Turn_Has_R1 (
+    PlayerID CHAR(10), 
+    RoundNumber INTEGER, 
+    TurnNumber INTEGER, 
+    DamageDoneLastTurn INTEGER, 
+    HealthBefore INTEGER, 
+    SkillName VARCHAR(50) NOT NULL UNIQUE, 
+    PRIMARY KEY(PlayerID, RoundNumber, TurnNumber), 
+    FOREIGN KEY(RoundNumber) REFERENCES Round, 
+    FOREIGN KEY(SkillName) REFERENCES Skill_R1); 
+
+CREATE TABLE Turn_Has_R2 ( 
+    HealthBefore INTEGER, 
+    DamageDoneLastTurn INTEGER, 
+    HealthAfter INTEGER,
+    PRIMARY KEY(HealthBefore, DamageDoneLastTurn)); 
+
+CREATE TABLE Skill_R1 ( 
+    SkillName VARCHAR(50) PRIMARY KEY, 
+    DamagePoints INTEGER); 
+    
+CREATE TABLE Skill_R2 ( 
+    DamagePoints INTEGER PRIMARY KEY, 
+    EffectPoints INTEGER);
+
+CREATE TABLE Attack ( 
+    SkillName VARCHAR(50) PRIMARY KEY, 
+    AttackBonus INTEGER, 
+    FOREIGN KEY(SkillName) REFERENCES Skill_R1);
+
+CREATE TABLE Defence ( 
+    SkillName VARCHAR(50) PRIMARY KEY, 
+    DamageReduction INTEGER, 
+    FOREIGN KEY(SkillName) REFERENCES Skill_R1);
+
+CREATE TABLE Agility ( 
+    SkillName VARCHAR(50) PRIMARY KEY, 
+    AgilityBonus INTEGER, 
+    FOREIGN KEY(SkillName) REFERENCES Skill_R1);
+
+CREATE TABLE Reward ( 
+    RewardName VARCHAR(50) PRIMARY KEY, 
+    Points INTEGER);
+
+CREATE TABLE Round_Provides (
+    RoundNumber INTEGER PRIMARY KEY, 
+    RewardName VARCHAR(50) NOT NULL, 
+    FOREIGN KEY(RewardName) REFERENCES Reward );
+
+CREATE TABLE Player_Has_R1 (
+    PlayerID CHAR(10) PRIMARY KEY, 
+    Points INTEGER, 
+    Username VARCHAR(20), 
+    RankingID CHAR(10) NOT NULL, 
+    StatID CHAR(10) NOT NULL, 
+    Wins INTEGER, 
+    Losses INTEGER, 
+    UNIQUE (StatID), 
+    FOREIGN KEY ( RankingID ) REFERENCES Ranking); 
+    
+CREATE TABLE Player_Has_R2 ( 
+    Wins INTEGER, 
+    Losses INTEGER, 
+    TotalGamesPlayed INTEGER, 
+    PRIMARY KEY (Wins, Losses));
+
+CREATE TABLE Ranking ( 
+    RankingID CHAR(10) PRIMARY KEY); 
+    
+CREATE TABLE Iron( 
+    RankingID CHAR(10) PRIMARY KEY, 
+    IronLevels VARCHAR(10), 
+    FOREIGN KEY(RankingID) REFERENCES Ranking); 
+
+CREATE TABLE Bronze ( 
+    RankingID CHAR(10) PRIMARY KEY, 
+    BronzeLevels VARCHAR(10), 
+    FOREIGN KEY(RankingID) REFERENCES Ranking);
+    
+CREATE TABLE Silver ( 
+    RankingID CHAR(10) PRIMARY KEY, 
+    SilverLevels VARCHAR(10), 
+    FOREIGN KEY(RankingID) REFERENCES Ranking); 
+    
+CREATE TABLE Gold ( 
+    RankingID CHAR(10) PRIMARY KEY, 
+    GoldLevels VARCHAR(10),
+    FOREIGN KEY(RankingID) REFERENCES Ranking);
+
+
+INSERT INTO Avatar VALUES(
+    'Sammie', 
+    'Shy School Girl', 
+    'Age: 16 Traits: -Collects pressed flowers in her diary -Hides small candies in her pencil pouch to share with close friends'); 
+    
+INSERT INTO Avatar VALUES(
+    'Damien', 
+    'Bodyguard', 
+    'Age: 29 Traits: -Drinks black coffee like it is water -Unfriendly and does not smile, but will protect the person he is sworn to protect with his life on the line'); 
+
+INSERT INTO Avatar VALUES(
+    'Jerry', 
+    'Ghost', 
+    'Age: UNKNOWN Traits: -LOVES harmless pranks'); 
+
+INSERT INTO Avatar VALUES(
+    'Felix', 
+    'Spy', 
+    'Age: 36 Traits: -Photographic Memory -Has a room filled with pictures of people'); 
+    
+INSERT INTO Avatar VALUES (
+    'Aeris', 
+    'Fairy', 
+    'Age: 1000 Traits: -Loves bubble baths -Scared of thunderstorms -Collects human trinkets');
+
+INSERT INTO Player_Has_Avatar VALUES ('Sammie', 'A000000001'); 
+INSERT INTO Player_Has_Avatar VALUES ('Damien', 'A000000002'); 
+INSERT INTO Player_Has_Avatar VALUES ('Jerry', 'A000000003'); 
+INSERT INTO Player_Has_Avatar VALUES ('Felix', 'A000000004'); 
+INSERT INTO Player_Has_Avatar VALUES ('Aeris', 'A000000005');
+
+INSERT INTO Plays VALUES (1, 'A000000001'); 
+INSERT INTO Plays VALUES (2, 'A000000002'); 
+INSERT INTO Plays VALUES (3, 'A000000003'); 
+INSERT INTO Plays VALUES (4, 'A000000004'); 
+INSERT INTO Plays VALUES (5, 'A000000005');
+
+INSERT INTO Round VALUES (1, '14:30:00', '15:00:00', 'A000000003');
+INSERT INTO Round VALUES (2, '2:30:00', '6:00:00', 'A000000004'); 
+INSERT INTO Round VALUES (3, '16:30:00', '20:00:00', 'A000000001'); 
+INSERT INTO Round VALUES (4, '11:30:00', '12:00:00', 'A000000002'); 
+INSERT INTO Round VALUES (5, '10:30:00', '13:00:00', 'A000000005');
+
+INSERT INTO Receives VALUES('Level Up','A000000001'); 
+INSERT INTO Receives VALUES('Rookie Reward','A000000002'); 
+INSERT INTO Receives VALUES('Veteran Bonus','A000000003'); 
+INSERT INTO Receives VALUES('100th round Milestone','A000000004'); 
+INSERT INTO Receives VALUES('Daily Streak Bonus','A000000005');
+
+INSERT INTO Turn_Has_R1 VALUES('A000000001', 1, 1, 50, 100, 'Punch'); 
+INSERT INTO Turn_Has_R1 VALUES('A000000002', 2, 2, 60, 140, 'Kick'); 
+INSERT INTO Turn_Has_R1 VALUES('A000000003', 3, 3, 70, 130, 'Guard'); 
+INSERT INTO Turn_Has_R1 VALUES('A000000004', 4, 4, 80, 200, 'Rapid Shift'); 
+INSERT INTO Turn_Has_R1 VALUES('A000000005', 5, 5, 90, 160, 'Sidestep'); 
+
+INSERT INTO Turn_Has_R2 VALUES(50, 100, 50); 
+INSERT INTO Turn_Has_R2 VALUES(80, 140, 60); 
+INSERT INTO Turn_Has_R2 VALUES(60, 130, 70);
+INSERT INTO Turn_Has_R2 VALUES(120, 200, 80);
+INSERT INTO Turn_Has_R2 VALUES(70, 160, 90);
+
+INSERT INTO Skill_R1 VALUES('Punch', 10); 
+INSERT INTO Skill_R1 VALUES('Kick', 20); 
+INSERT INTO Skill_R1 VALUES('Guard', 30); 
+INSERT INTO Skill_R1 VALUES('Shield', 40); 
+INSERT INTO Skill_R1 VALUES('Rapid Shift',50); 
+INSERT INTO Skill_R1 VALUES('Sidestep', 40); 
+
+INSERT INTO Skill_R2 VALUES(10, 100); 
+INSERT INTO Skill_R2 VALUES(20, 90);
+INSERT INTO Skill_R2 VALUES(30, 80); 
+INSERT INTO Skill_R2 VALUES(40, 70); 
+INSERT INTO Skill_R2 VALUES(50, 60); 
+INSERT INTO Skill_R2 VALUES(40, 50);
+
+INSERT INTO Attack VALUES('Punch', 40); 
+INSERT INTO Attack VALUES('Punch', 50); 
+INSERT INTO Attack VALUES('Kick', 60); 
+INSERT INTO Attack VALUES('Kick', 70);
+INSERT INTO Attack VALUES('Kick', 80);
+
+INSERT INTO Defence VALUES('Guard', 40); 
+INSERT INTO Defence VALUES('Guard', 50); 
+INSERT INTO Defence VALUES('Shield', 60); 
+INSERT INTO Defence VALUES('Shield', 70); 
+INSERT INTO Defence VALUES('Shield', 80);
+
+INSERT INTO Agility VALUES('Rapid Shift', 40); 
+INSERT INTO Agility VALUES('Rapid Shift', 50); 
+INSERT INTO Agility VALUES('Sidestep', 60); 
+INSERT INTO Agility VALUES('Sidestep', 70); 
+INSERT INTO Agility VALUES('Sidestep', 80);
+
+INSERT INTO Reward Reward('Level Up', 50); 
+INSERT INTO Reward Reward('Rookie Reward', 60); 
+INSERT INTO Reward Reward('Veteran Bonus', 70); 
+INSERT INTO Reward Reward('100th round Milestone', 80); 
+INSERT INTO Reward Reward('Daily Streak Bonus', 90);
+
+INSERT INTO Round_Provides VALUES(1, 'Level Up'); 
+INSERT INTO Round_Provides VALUES(2, 'Rookie Reward'); 
+INSERT INTO Round_Provides VALUES(3, 'Veteran Bonus');
+INSERT INTO Round_Provides VALUES(4, '100th round Milestone');
+INSERT INTO Round_Provides VALUES(5, 'Daily Streak Bonus');
+
+INSERT INTO Player_Has_R1 VALUES ('A000000001', 200, 'AceHunter', 'RB00000001', 'S000000001', 10, 5, 15); 
+INSERT INTO Player_Has_R1 VALUES ('A000000002', 130, 'ShadowFury', 'RI00000001', 'S000000002', 6, 9, 15); 
+INSERT INTO Player_Has_R1 VALUES ('A000000003', 50, 'NovaStar', 'RI00000002', 'S000000003', 3, 2, 5);
+INSERT INTO Player_Has_R1 VALUES ('A000000004', 300, 'PixelCrush', 'RG00000001', 'S000000004', 16, 5, 21); 
+INSERT INTO Player_Has_R1 VALUES ('A000000005', 180, 'DragonX', 'RB0000003', 'S000000005', 8, 5, 13); 
+INSERT INTO Player_Has_R1 VALUES ('A000000006', 120, 'BlitzQueen', 'RI00000003', 'S000000006', 8, 8, 16); 
+INSERT INTO Player_Has_R1 VALUES ('A000000007', 90, 'SilentScope', 'RI00000004', 'S000000007', 2, 5, 7); 
+INSERT INTO Player_Has_R1 VALUES ('A000000008', 200, 'SkyBreaker', 'RS00000002', 'S000000007', 11, 5, 16); 
+
+INSERT INTO Player_Has_R2 VALUES (10, 5, 15); 
+INSERT INTO Player_Has_R2 VALUES (6, 9, 15); 
+INSERT INTO Player_Has_R2 VALUES (3, 2, 5); 
+INSERT INTO Player_Has_R2 VALUES (16, 5, 21);
+INSERT INTO Player_Has_R2 VALUES (8, 5, 13); 
+INSERT INTO Player_Has_R2 VALUES (8, 8, 16); 
+INSERT INTO Player_Has_R2 VALUES (2, 5, 7); 
+INSERT INTO Player_Has_R2 VALUES (11, 5, 16);
+
+INSERT INTO Ranking VALUES('RI00000001'); 
+INSERT INTO Ranking VALUES('RI00000002'); 
+INSERT INTO Ranking VALUES('RI00000003'); 
+INSERT INTO Ranking VALUES('RI00000004'); 
+INSERT INTO Ranking VALUES('RI00000005'); 
+
+INSERT INTO Ranking VALUES('RB00000001'); 
+INSERT INTO Ranking VALUES('RB00000002'); 
+INSERT INTO Ranking VALUES('RB00000003'); 
+INSERT INTO Ranking VALUES('RB00000004'); 
+INSERT INTO Ranking VALUES('RB00000005'); 
+
+INSERT INTO Ranking VALUES('RS00000001'); 
+INSERT INTO Ranking VALUES('RS00000002'); 
+INSERT INTO Ranking VALUES('RS00000003'); 
+INSERT INTO Ranking VALUES('RS00000004'); 
+INSERT INTO Ranking VALUES('RS00000005'); 
+
+INSERT INTO Ranking VALUES('RG00000001'); 
+INSERT INTO Ranking VALUES('RG00000002'); 
+INSERT INTO Ranking VALUES('RG00000003'); 
+INSERT INTO Ranking VALUES('RG00000004'); 
+INSERT INTO Ranking VALUES('RG00000005');
+
+INSERT INTO Iron VALUES ('RI00000001', 'Iron I'); 
+INSERT INTO Iron VALUES ('RI00000002', 'Iron I'); 
+INSERT INTO Iron VALUES ('RI00000003', 'Iron III'); 
+INSERT INTO Iron VALUES ('RI00000004', 'Iron IV'); 
+INSERT INTO Iron VALUES ('RI00000005', 'Iron II'); 
+
+INSERT INTO Bronze VALUES ('RB00000001', 'Bronze I'); 
+INSERT INTO Bronze VALUES ('RB00000002', 'Bronze II'); 
+INSERT INTO Bronze VALUES ('RB00000003', 'Bronze III'); 
+INSERT INTO Bronze VALUES ('RB00000004', 'Bronze I'); 
+INSERT INTO Bronze VALUES ('RB00000005', 'Bronze IV');
+
+INSERT INTO Silver VALUES ('RS00000001', 'Silver III'); 
+INSERT INTO Silver VALUES ('RS00000002', 'Silver I'); 
+INSERT INTO Silver VALUES ('RS00000003', 'Silver II');
+INSERT INTO Silver VALUES ('RS00000004', 'Silver I'); 
+INSERT INTO Silver VALUES ('RS00000005', 'Silver V'); 
+
+INSERT INTO Gold VALUES ('RG00000001', 'Gold I'); 
+INSERT INTO Gold VALUES ('RG00000002', 'Gold II');
+INSERT INTO Gold VALUES ('RG00000003', 'Gold III'); 
+INSERT INTO Gold VALUES ('RG00000004', 'Gold II'); 
+INSERT INTO Gold VALUES ('RG00000005', 'Gold III');
