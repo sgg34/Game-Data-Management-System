@@ -1,7 +1,21 @@
 CREATE TABLE Avatar ( 
     Name VARCHAR(50) PRIMARY KEY, 
     Skin VARCHAR(50), 
-    Profile VARCHAR(50));
+    Profile VARCHAR(200));
+
+CREATE TABLE Ranking ( 
+    RankingID CHAR(10) PRIMARY KEY); 
+
+CREATE TABLE Player_Has_R1 (
+    PlayerID CHAR(10) PRIMARY KEY, 
+    Points INTEGER, 
+    Username VARCHAR(20), 
+    RankingID CHAR(10) NOT NULL, 
+    StatID CHAR(10) NOT NULL, 
+    Wins INTEGER, 
+    Losses INTEGER, 
+    UNIQUE (StatID), 
+    FOREIGN KEY ( RankingID ) REFERENCES Ranking); 
 
 CREATE TABLE Player_Has_Avatar(
     AvatarName VARCHAR(50) NOT NULL,
@@ -10,6 +24,12 @@ CREATE TABLE Player_Has_Avatar(
     FOREIGN KEY (AvatarName) REFERENCES Avatar, 
     FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
 
+CREATE TABLE Round(
+    RoundNumber INTEGER PRIMARY KEY,
+    StartTime TIMESTAMP, 
+    EndTime TIMESTAMP, 
+    WinnerPlayerID CHAR(10));
+
 CREATE TABLE Plays(
     RoundNumber INTEGER, 
     PlayerID CHAR(10), 
@@ -17,11 +37,9 @@ CREATE TABLE Plays(
     FOREIGN KEY (RoundNumber) REFERENCES Round, 
     FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
 
-CREATE TABLE Round(
-    RoundNumber INTEGER PRIMARY KEY,
-    StartTime TIME, 
-    EndTime TIME, 
-    WinnerPlayerID CHAR(10));
+CREATE TABLE Reward ( 
+    RewardName VARCHAR(50) PRIMARY KEY, 
+    Points INTEGER);
 
 CREATE TABLE Provides (
     RewardName VARCHAR(50), 
@@ -29,6 +47,10 @@ CREATE TABLE Provides (
     PRIMARY KEY(RewardName, PlayerID), 
     FOREIGN KEY(RewardName) REFERENCES Reward, 
     FOREIGN KEY(PlayerID) REFERENCES Player_Has_R1);
+
+CREATE TABLE Skill_R1 ( 
+    SkillName VARCHAR(50) PRIMARY KEY, 
+    DamagePoints INTEGER); 
 
 CREATE TABLE Turn_Has_R1 (
     PlayerID CHAR(10), 
@@ -47,9 +69,6 @@ CREATE TABLE Turn_Has_R2 (
     HealthAfter INTEGER,
     PRIMARY KEY(HealthBefore, DamageDoneLastTurn)); 
 
-CREATE TABLE Skill_R1 ( 
-    SkillName VARCHAR(50) PRIMARY KEY, 
-    DamagePoints INTEGER); 
     
 CREATE TABLE Skill_R2 ( 
     DamagePoints INTEGER PRIMARY KEY, 
@@ -70,35 +89,18 @@ CREATE TABLE Agility (
     AgilityBonus INTEGER, 
     FOREIGN KEY(SkillName) REFERENCES Skill_R1);
 
-CREATE TABLE Reward ( 
-    RewardName VARCHAR(50) PRIMARY KEY, 
-    Points INTEGER);
 
 CREATE TABLE Round_Provides (
     RoundNumber INTEGER PRIMARY KEY, 
     RewardName VARCHAR(50) NOT NULL, 
     FOREIGN KEY(RewardName) REFERENCES Reward );
 
-CREATE TABLE Player_Has_R1 (
-    PlayerID CHAR(10) PRIMARY KEY, 
-    Points INTEGER, 
-    Username VARCHAR(20), 
-    RankingID CHAR(10) NOT NULL, 
-    StatID CHAR(10) NOT NULL, 
-    Wins INTEGER, 
-    Losses INTEGER, 
-    UNIQUE (StatID), 
-    FOREIGN KEY ( RankingID ) REFERENCES Ranking); 
-    
 CREATE TABLE Player_Has_R2 ( 
     Wins INTEGER, 
     Losses INTEGER, 
     TotalGamesPlayed INTEGER, 
     PRIMARY KEY (Wins, Losses));
 
-CREATE TABLE Ranking ( 
-    RankingID CHAR(10) PRIMARY KEY); 
-    
 CREATE TABLE Iron( 
     RankingID CHAR(10) PRIMARY KEY, 
     IronLevels VARCHAR(10), 
@@ -157,11 +159,11 @@ INSERT INTO Plays VALUES (3, 'A000000003');
 INSERT INTO Plays VALUES (4, 'A000000004'); 
 INSERT INTO Plays VALUES (5, 'A000000005');
 
-INSERT INTO Round VALUES (1, '14:30:00', '15:00:00', 'A000000003');
-INSERT INTO Round VALUES (2, '2:30:00', '6:00:00', 'A000000004'); 
-INSERT INTO Round VALUES (3, '16:30:00', '20:00:00', 'A000000001'); 
-INSERT INTO Round VALUES (4, '11:30:00', '12:00:00', 'A000000002'); 
-INSERT INTO Round VALUES (5, '10:30:00', '13:00:00', 'A000000005');
+INSERT INTO Round VALUES (1, TIMESTAMP '2025-08-01 14:30:00', TIMESTAMP '2025-08-01 15:00:00', 'A000000003');
+INSERT INTO Round VALUES (2, TIMESTAMP '2025-07-31 2:30:00', TIMESTAMP '2025-07-31 6:00:00', 'A000000004'); 
+INSERT INTO Round VALUES (3, TIMESTAMP '2025-07-31 16:30:00', TIMESTAMP '2025-07-31 20:00:00', 'A000000001'); 
+INSERT INTO Round VALUES (4, TIMESTAMP '2025-07-30 11:30:00', TIMESTAMP '2025-07-30 12:00:00', 'A000000002'); 
+INSERT INTO Round VALUES (5, TIMESTAMP '2025-07-30 10:30:00', TIMESTAMP '2025-07-30 13:00:00', 'A000000005');
 
 INSERT INTO Receives VALUES('Level Up','A000000001'); 
 INSERT INTO Receives VALUES('Rookie Reward','A000000002'); 
