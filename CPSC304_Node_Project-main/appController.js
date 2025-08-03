@@ -65,6 +65,19 @@ router.post("/update-name-playertable", async (req, res) => {
     }
 });
 
+router.post("/update-points-playertable", async (req, res) => {
+    const { playerID, newPoints } = req.body;
+    console.log("Received request to update name:", req.body);
+    const updateResult = await appService.updatePointsPlayertable(playerID, newPoints);
+    if (updateResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+
+
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {

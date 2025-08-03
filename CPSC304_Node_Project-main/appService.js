@@ -149,6 +149,19 @@ async function updateNamePlayertable(playerID, newName) {
     });
 }
 
+async function updatePointsPlayertable(playerID, newPoints) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `UPDATE Player_Has_R1 SET Points = :newPoints WHERE PlayerID = :playerID`,
+            [newPoints, playerID],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function countDemotable() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
@@ -165,5 +178,6 @@ module.exports = {
     //initiateDemotable, 
     insertPlayertable, 
     updateNamePlayertable, 
+    updatePointsPlayertable, 
     countDemotable
 };

@@ -227,6 +227,37 @@ async function updateNamePlayertable(event) {
     }
 }
 
+// Updates names in the demotable.
+async function updatePointsPlayertable(event) {
+    event.preventDefault();
+    const updatePlayerIDValue = document.getElementById('UpdatePlayerID').value;
+    const newPointsValue = document.getElementById('updateNewPoints').value;
+
+    const response = await fetch('/update-points-playertable', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            playerID: updatePlayerIDValue,
+            newPoints: newPointsValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('updatePointsResultMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "Points updated successfully!";
+        fetchTableData();
+    } else {
+        messageElement.textContent = "Error updating name!";
+    }
+}
+
+
+
+
 // Counts rows in the demotable.
 // Modify the function accordingly if using different aggregate functions or procedures.
 async function countDemotable() {
@@ -255,6 +286,8 @@ window.onload = function() {
     //document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertPlayertable").addEventListener("submit", insertPlayertable);
     document.getElementById("update-name-playertable").addEventListener("submit", updateNamePlayertable);
+    document.getElementById("update-points-playertable").addEventListener("submit", updatePointsPlayertable);
+
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
 
