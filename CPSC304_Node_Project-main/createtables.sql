@@ -73,7 +73,7 @@ CREATE TABLE Round(
     StartTime TIMESTAMP, 
     EndTime TIMESTAMP, 
     WinnerPlayerID VARCHAR2(10),
-    FOREIGN KEY (WinnderPlayerID) REFERENCES Player_Has_R1 ON DELETE SET NULL);
+    FOREIGN KEY (WinnerPlayerID) REFERENCES Player_Has_R1 ON DELETE SET NULL);
 
 CREATE TABLE Plays(
     RoundNumber INTEGER, 
