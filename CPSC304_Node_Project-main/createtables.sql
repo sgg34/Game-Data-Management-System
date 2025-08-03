@@ -63,7 +63,7 @@ CREATE TABLE Player_Has_R1 (
 
 CREATE TABLE Player_Has_Avatar(
     AvatarName VARCHAR(50) NOT NULL,
-    PlayerID CHAR(10), 
+    PlayerID VARCHAR(10), 
     PRIMARY KEY (AvatarName, PlayerID), 
     FOREIGN KEY (AvatarName) REFERENCES Avatar, 
     FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
@@ -76,7 +76,7 @@ CREATE TABLE Round(
 
 CREATE TABLE Plays(
     RoundNumber INTEGER, 
-    PlayerID CHAR(10), 
+    PlayerID VARCHAR(10), 
     PRIMARY KEY (RoundNumber, PlayerID),
     FOREIGN KEY (RoundNumber) REFERENCES Round, 
     FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
@@ -87,7 +87,7 @@ CREATE TABLE Reward (
 
 CREATE TABLE Provides (
     RewardName VARCHAR(50), 
-    PlayerID CHAR(10), 
+    PlayerID VARCHAR(10), 
     PRIMARY KEY(RewardName, PlayerID), 
     FOREIGN KEY(RewardName) REFERENCES Reward, 
     FOREIGN KEY(PlayerID) REFERENCES Player_Has_R1);
@@ -147,22 +147,22 @@ CREATE TABLE Player_Has_R2 (
     PRIMARY KEY (Wins, Losses));
 
 CREATE TABLE Iron( 
-    RankingID CHAR(10) PRIMARY KEY, 
+    RankingID VARCHAR(10) PRIMARY KEY, 
     IronLevels VARCHAR(10), 
     FOREIGN KEY(RankingID) REFERENCES Ranking); 
 
 CREATE TABLE Bronze ( 
-    RankingID CHAR(10) PRIMARY KEY, 
+    RankingID VARCHAR(10) PRIMARY KEY, 
     BronzeLevels VARCHAR(10), 
     FOREIGN KEY(RankingID) REFERENCES Ranking);
     
 CREATE TABLE Silver ( 
-    RankingID CHAR(10) PRIMARY KEY, 
+    RankingID VARCHAR(10) PRIMARY KEY, 
     SilverLevels VARCHAR(10), 
     FOREIGN KEY(RankingID) REFERENCES Ranking); 
     
 CREATE TABLE Gold ( 
-    RankingID CHAR(10) PRIMARY KEY, 
+    RankingID  VARCHAR(10) PRIMARY KEY, 
     GoldLevels VARCHAR(10),
     FOREIGN KEY(RankingID) REFERENCES Ranking);
 
