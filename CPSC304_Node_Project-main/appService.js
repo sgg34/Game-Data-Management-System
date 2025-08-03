@@ -134,31 +134,17 @@ async function insertPlayertable(id, points, name, rank, statID, wins, losses ) 
     });
 }
 
-// async function updateNamePlayertable(playerID, newName) {
-//     return await withOracleDB(async (connection) => {
-//         const result = await connection.execute(
-//             `UPDATE Player_Has_R1 SET Username = :1 WHERE TRIM(PlayerID) = :2`,
-//             [ newName, playerID ],
-//             { autoCommit: true }
-//         );
 
-//         return result.rowsAffected && result.rowsAffected > 0;
-//     }).catch(() => {
-//         return false;
-//     });
-// }
 
 async function updateNamePlayertable(playerID, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `UPDATE Player_Has_R1 SET Username = :1 WHERE PlayerID = :2`,
+            `UPDATE Player_Has_R1 SET Username = :newName WHERE PlayerID = :playerID`,
             [newName, playerID],
             { autoCommit: true }
         );
-        console.log("Rows affected:", result.rowsAffected);
         return result.rowsAffected && result.rowsAffected > 0;
-    }).catch((err) => {
-        //console.error("Update failed:", err);
+    }).catch(() => {
         return false;
     });
 }

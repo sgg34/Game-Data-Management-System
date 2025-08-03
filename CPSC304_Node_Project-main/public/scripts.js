@@ -199,7 +199,7 @@ window.onload = function() {
     fetchTableData();
     //document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertPlayertable").addEventListener("submit", insertPlayertable);
-    document.getElementById("updataNamePlayertable").addEventListener("submit", updateNamePlayertable);
+    document.getElementById("update-name-playertable").addEventListener("submit", updateNamePlayertable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
 
