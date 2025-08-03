@@ -8,14 +8,14 @@
     <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
     <!-- <link rel="stylesheet" href="styles.css">   -->
 
-    <title>Database Application</title>
+    <title>Game Database Application</title>
 </head>
 <body>
     <!-- ===================================================================================== -->
     <!-- Display the current status of the database connection. 
          !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
          -->
-    <h1>Database Connection Status: 
+    <h1>Game Database Connection Status: 
         <!-- An in-line placeholder to display connection status. -->
         <span id="dbStatus"> </span>
         <!-- A loading GIF, will be hided once get the status. -->
@@ -24,15 +24,12 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <!-- Show 'Demotable'. 
-        Data will be fetched and inserted here dynamically using JavaScript. -->
-    <h2>Show Demotable</h2>
-    <table id="demotable" border="1">
+    <h2>Show Ranking Table</h2>
+    <table id="rankingtable" border="1">
         <thead>
             <tr>
-                <!--Table head, need to be adjusted accordingly to align with your own.-->
-                <th>ID</th>
-                <th>Name</th>
+                <th>RankingID</th>
+
             </tr>
         </thead>
         <tbody>
@@ -40,6 +37,31 @@
     </table>
 
     <br><hr><br> <!-- ========================================================================= -->
+
+
+    <!-- Show 'playertable'. 
+        Data will be fetched and inserted here dynamically using JavaScript. -->
+    <h2>Show Players Table</h2>
+    <table id="playertable" border="1">
+        <thead>
+            <tr>
+                <!--Table head, need to be adjusted accordingly to align with your own.-->
+                <th>PlayerID</th>
+                <th>Points</th>
+                <th>Username</th>
+                <th>RankingID</th>
+                <th>StatID</th>
+                <th>Wins</th>
+                <th>Losses</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
 
     <h2>Reset Demotable</h2>
     <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>

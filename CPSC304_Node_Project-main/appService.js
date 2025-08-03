@@ -76,34 +76,49 @@ async function testOracleConnection() {
     });
 }
 
-async function fetchDemotableFromDb() {
+async function fetchPlayertableFromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM DEMOTABLE');
+        const result = await connection.execute('SELECT * FROM Player_Has_R1');
         return result.rows;
     }).catch(() => {
         return [];
     });
 }
 
-async function initiateDemotable() {
+async function fetchRankingtableFromDb() {
     return await withOracleDB(async (connection) => {
-        try {
-            await connection.execute(`DROP TABLE DEMOTABLE`);
-        } catch(err) {
-            console.log('Table might not exist, proceeding to create...');
-        }
-
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
-            )
-        `);
-        return true;
+        const result = await connection.execute('SELECT * FROM Ranking');
+        return result.rows;
     }).catch(() => {
-        return false;
+        return [];
     });
 }
+
+// async function initiateDemotable() {
+//     return await withOracleDB(async (connection) => {
+//         try {
+//             await connection.execute(`DROP TABLE Player_Has_R1`);
+//         } catch(err) {
+//             console.log('Table might not exist, proceeding to create...');
+//         }
+
+//         const result = await connection.execute(`
+//             CREATE TABLE Player_Has_R1 (
+//                 PlayerID CHAR(10) PRIMARY KEY, 
+//                 Points INTEGER, 
+//                 Username VARCHAR(20), 
+//                 RankingID CHAR(10) NOT NULL, 
+//                 StatID CHAR(10) NOT NULL, 
+//                 Wins INTEGER, 
+//                 Losses INTEGER, 
+//                 UNIQUE (StatID), 
+//                 FOREIGN KEY ( RankingID ) REFERENCES Ranking)
+//         `);
+//         return true;
+//     }).catch(() => {
+//         return false;
+//     });
+// }
 
 async function insertDemotable(id, name) {
     return await withOracleDB(async (connection) => {
@@ -144,8 +159,9 @@ async function countDemotable() {
 
 module.exports = {
     testOracleConnection,
-    fetchDemotableFromDb,
-    initiateDemotable, 
+    fetchPlayertableFromDb,
+    fetchRankingtableFromDb,
+    //initiateDemotable, 
     insertDemotable, 
     updateNameDemotable, 
     countDemotable

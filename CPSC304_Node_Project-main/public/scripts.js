@@ -36,24 +36,51 @@ async function checkDbConnection() {
     });
 }
 
-// Fetches data from the demotable and displays it.
-async function fetchAndDisplayUsers() {
-    const tableElement = document.getElementById('demotable');
+// Fetches data from the Ranking table and displays it.
+async function fetchAndDisplayRanking() {
+    const tableElement = document.getElementById('rankingtable');
     const tableBody = tableElement.querySelector('tbody');
 
-    const response = await fetch('/demotable', {
+    const response = await fetch('/rankingtable', {
         method: 'GET'
     });
 
     const responseData = await response.json();
-    const demotableContent = responseData.data;
+    const rankingtableContent = responseData.data;
 
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {
         tableBody.innerHTML = '';
     }
 
-    demotableContent.forEach(user => {
+    rankingtableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+
+// Fetches data from the palyertable and displays it.
+async function fetchAndDisplayUsers() {
+    const tableElement = document.getElementById('playertable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/playertable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const playertableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    playertableContent.forEach(user => {
         const row = tableBody.insertRow();
         user.forEach((field, index) => {
             const cell = row.insertCell(index);
@@ -170,5 +197,6 @@ window.onload = function() {
 // General function to refresh the displayed table data. 
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
+    fetchAndDisplayRanking();
     fetchAndDisplayUsers();
 }
