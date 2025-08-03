@@ -145,19 +145,18 @@ async function insertPlayertable(event) {
 }
 
 // Updates names in the demotable.
-async function updateNameDemotable(event) {
+async function updateNamePlayertable(event) {
     event.preventDefault();
-
-    const oldNameValue = document.getElementById('updateOldName').value;
+    const updatePlayerIDValue = document.getElementById('UpdatePlayerID').value;
     const newNameValue = document.getElementById('updateNewName').value;
 
-    const response = await fetch('/update-name-demotable', {
+    const response = await fetch('/update-name-playertable', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            oldName: oldNameValue,
+            playerID: updatePlayerIDValue,
             newName: newNameValue
         })
     });
@@ -200,7 +199,7 @@ window.onload = function() {
     fetchTableData();
     //document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertPlayertable").addEventListener("submit", insertPlayertable);
-    document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
+    document.getElementById("updataNamePlayertable").addEventListener("submit", updateNamePlayertable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
 

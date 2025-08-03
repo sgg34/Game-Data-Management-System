@@ -51,7 +51,7 @@ CREATE TABLE Ranking (
     RankingID VARCHAR(10) PRIMARY KEY); 
 
 CREATE TABLE Player_Has_R1 (
-    PlayerID VARCHAR(10) PRIMARY KEY, 
+    PlayerID VARCHAR2(10) PRIMARY KEY, 
     Points INTEGER, 
     Username VARCHAR(20), 
     RankingID VARCHAR(10) NOT NULL, 
@@ -63,7 +63,7 @@ CREATE TABLE Player_Has_R1 (
 
 CREATE TABLE Player_Has_Avatar(
     AvatarName VARCHAR(50) NOT NULL,
-    PlayerID VARCHAR(10), 
+    PlayerID VARCHAR2(10), 
     PRIMARY KEY (AvatarName, PlayerID), 
     FOREIGN KEY (AvatarName) REFERENCES Avatar, 
     FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
@@ -76,7 +76,7 @@ CREATE TABLE Round(
 
 CREATE TABLE Plays(
     RoundNumber INTEGER, 
-    PlayerID VARCHAR(10), 
+    PlayerID VARCHAR2(10), 
     PRIMARY KEY (RoundNumber, PlayerID),
     FOREIGN KEY (RoundNumber) REFERENCES Round, 
     FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
@@ -87,7 +87,7 @@ CREATE TABLE Reward (
 
 CREATE TABLE Provides (
     RewardName VARCHAR(50), 
-    PlayerID VARCHAR(10), 
+    PlayerID VARCHAR2(10), 
     PRIMARY KEY(RewardName, PlayerID), 
     FOREIGN KEY(RewardName) REFERENCES Reward, 
     FOREIGN KEY(PlayerID) REFERENCES Player_Has_R1);

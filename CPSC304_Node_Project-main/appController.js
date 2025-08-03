@@ -54,9 +54,10 @@ router.post("/insertPlayertable", async (req, res) => {
 
 
 
-router.post("/update-name-demotable", async (req, res) => {
-    const { oldName, newName } = req.body;
-    const updateResult = await appService.updateNameDemotable(oldName, newName);
+router.post("/update-name-playertable", async (req, res) => {
+    const { playerID, newName } = req.body;
+    console.log("Received request to update name:", req.body);
+    const updateResult = await appService.updateNamePlayertable(playerID, newName);
     if (updateResult) {
         res.json({ success: true });
     } else {
