@@ -59,7 +59,7 @@ CREATE TABLE Player_Has_R1 (
     Wins INTEGER, 
     Losses INTEGER, 
     UNIQUE (StatID), 
-    FOREIGN KEY ( RankingID ) REFERENCES Ranking); 
+    FOREIGN KEY ( RankingID ) REFERENCES Ranking ON DELETE CASCADE); 
 
 CREATE TABLE Player_Has_Avatar(
     AvatarName VARCHAR(50) NOT NULL,
