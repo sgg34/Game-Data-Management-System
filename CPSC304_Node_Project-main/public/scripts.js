@@ -36,6 +36,7 @@ async function checkDbConnection() {
     });
 }
 
+
 // Fetches data from the Ranking table and displays it.
 async function fetchAndDisplayRanking() {
     const tableElement = document.getElementById('rankingtable');
@@ -207,7 +208,7 @@ async function updateNamePlayertable(event) {
 // Updates names in the demotable.
 async function updatePointsPlayertable(event) {
     event.preventDefault();
-    const updatePlayerIDValue = document.getElementById('UpdatePlayerID').value;
+    const updatePlayerIDValue = document.getElementById('Update-pointsPlayerID').value;
     const newPointsValue = document.getElementById('updateNewPoints').value;
 
     const response = await fetch('/update-points-playertable', {

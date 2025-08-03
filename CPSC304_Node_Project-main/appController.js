@@ -56,7 +56,6 @@ router.post("/insertPlayertable", async (req, res) => {
 
 router.post("/update-name-playertable", async (req, res) => {
     const { playerID, newName } = req.body;
-    console.log("Received request to update name:", req.body);
     const updateResult = await appService.updateNamePlayertable(playerID, newName);
     if (updateResult) {
         res.json({ success: true });
@@ -67,7 +66,7 @@ router.post("/update-name-playertable", async (req, res) => {
 
 router.post("/update-points-playertable", async (req, res) => {
     const { playerID, newPoints } = req.body;
-    console.log("Received request to update name:", req.body);
+    console.log("Received request to update points:", req.body);
     const updateResult = await appService.updatePointsPlayertable(playerID, newPoints);
     if (updateResult) {
         res.json({ success: true });
@@ -93,5 +92,14 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
+router.delete("/delete-ranking/:id", async (req, res) => {
+    const {id} = req.params;
+    const deleteResult = await appService.deleteRankingById(id);
+    if (deleteResult) {
+        res.json({success: true});
+    } else {
+        res.status(500).json({success: fail});
+    }
+})
 
 module.exports = router;

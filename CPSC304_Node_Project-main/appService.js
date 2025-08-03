@@ -170,6 +170,16 @@ async function countDemotable() {
         return -1;
     });
 }
+async function deleteRankingById(rankingId) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'DELETE FROM Ranking WHERE RankingID = :id',
+            [rankingId],
+            {autoCommit: true}
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => false);
+}
 
 module.exports = {
     testOracleConnection,
@@ -179,5 +189,6 @@ module.exports = {
     insertPlayertable, 
     updateNamePlayertable, 
     updatePointsPlayertable, 
+    deleteRankingById,
     countDemotable
 };

@@ -115,20 +115,11 @@
     <br><hr><br> <!-- ========================================================================= -->
 
     <h2>Update Points in Player Table</h2>
-     <!-- PlayerID CHAR(10) PRIMARY KEY, 
-    Points INTEGER, 
-    Username VARCHAR(20), 
-    RankingID CHAR(10) NOT NULL, 
-    StatID CHAR(10) NOT NULL, 
-    Wins INTEGER, 
-    Losses INTEGER, 
-    UNIQUE (StatID), 
-    FOREIGN KEY ( RankingID ) REFERENCES Ranking) -->
     <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
     <p>Please enter the PlayerID first to select the tuple you want to update values with first.</p>
 
     <form id="update-points-playertable">
-        PlayerID:  <input type="text" id="UpdatePlayerID" placeholder="Enter PlayerID" required> <br><br>
+        PlayerID:  <input type="text" id="Update-pointsPlayerID" placeholder="Enter PlayerID" required> <br><br>
         New Points: <input type="number" id="updateNewPoints" placeholder="Enter New Points" required> <br><br>
 
         <button type="submit"> update </button> <br>
@@ -137,7 +128,6 @@
     <div id="updatePointsResultMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
-
 
 
     <h2>Count the Tuples in DemoTable</h2>
