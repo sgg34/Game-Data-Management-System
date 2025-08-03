@@ -51,7 +51,7 @@ CREATE TABLE Ranking (
     RankingID VARCHAR(10) PRIMARY KEY); 
 
 CREATE TABLE Player_Has_R1 (
-    PlayerID VARCHAR2(10) PRIMARY KEY, 
+    PlayerID VARCHAR(10) PRIMARY KEY, 
     Points INTEGER, 
     Username VARCHAR(20), 
     RankingID VARCHAR(10) NOT NULL, 
@@ -59,27 +59,28 @@ CREATE TABLE Player_Has_R1 (
     Wins INTEGER, 
     Losses INTEGER, 
     UNIQUE (StatID), 
-    FOREIGN KEY ( RankingID ) REFERENCES Ranking ON DELETE CASCADE); 
+    FOREIGN KEY (RankingID) REFERENCES Ranking ON DELETE CASCADE); 
 
 CREATE TABLE Player_Has_Avatar(
     AvatarName VARCHAR(50) NOT NULL,
-    PlayerID VARCHAR2(10), 
+    PlayerID VARCHAR(10), 
     PRIMARY KEY (AvatarName, PlayerID), 
     FOREIGN KEY (AvatarName) REFERENCES Avatar, 
-    FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
+    FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1 ON DELETE CASCADE);
 
 CREATE TABLE Round(
     RoundNumber INTEGER PRIMARY KEY,
     StartTime TIMESTAMP, 
     EndTime TIMESTAMP, 
-    WinnerPlayerID CHAR(10));
+    WinnerPlayerID CHAR(10),
+    FOREIGN KEY (WinnderPlayerID) REFERENCES Player_Has_R1 ON DELETE SET NULL);
 
 CREATE TABLE Plays(
     RoundNumber INTEGER, 
-    PlayerID VARCHAR2(10), 
+    PlayerID VARCHAR(10), 
     PRIMARY KEY (RoundNumber, PlayerID),
     FOREIGN KEY (RoundNumber) REFERENCES Round, 
-    FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1);
+    FOREIGN KEY (PlayerID) REFERENCES Player_Has_R1 ON DELETE CASCADE);
 
 CREATE TABLE Reward ( 
     RewardName VARCHAR(50) PRIMARY KEY, 
@@ -87,10 +88,10 @@ CREATE TABLE Reward (
 
 CREATE TABLE Provides (
     RewardName VARCHAR(50), 
-    PlayerID VARCHAR2(10), 
+    PlayerID VARCHAR(10), 
     PRIMARY KEY(RewardName, PlayerID), 
     FOREIGN KEY(RewardName) REFERENCES Reward, 
-    FOREIGN KEY(PlayerID) REFERENCES Player_Has_R1);
+    FOREIGN KEY(PlayerID) REFERENCES Player_Has_R1 ON DELETE CASCADE);
 
 
 CREATE TABLE Skill_R1 ( 
@@ -104,7 +105,8 @@ CREATE TABLE Turn_Has_R1 (
     DamageDoneLastTurn INTEGER, 
     HealthBefore INTEGER, 
     SkillName VARCHAR(50) NOT NULL UNIQUE, 
-    PRIMARY KEY(PlayerID, RoundNumber, TurnNumber), 
+    PRIMARY KEY(PlayerID, RoundNumber, TurnNumber),
+    FOREIGN KEY(PlayerID) REFERENCES Player_Has_R1 ON DELETE CASCADE, 
     FOREIGN KEY(RoundNumber) REFERENCES Round, 
     FOREIGN KEY(SkillName) REFERENCES Skill_R1); 
 
@@ -149,22 +151,22 @@ CREATE TABLE Player_Has_R2 (
 CREATE TABLE Iron( 
     RankingID VARCHAR(10) PRIMARY KEY, 
     IronLevels VARCHAR(10), 
-    FOREIGN KEY(RankingID) REFERENCES Ranking); 
+    FOREIGN KEY(RankingID) REFERENCES Ranking(RankingID) ON DELETE CASCADE); 
 
-CREATE TABLE Bronze ( 
-    RankingID VARCHAR(10) PRIMARY KEY, 
-    BronzeLevels VARCHAR(10), 
-    FOREIGN KEY(RankingID) REFERENCES Ranking);
+CREATE TABLE Bronze (
+    RankingID VARCHAR(10) PRIMARY KEY,
+    BronzeLevels VARCHAR(10),
+    FOREIGN KEY (RankingID) REFERENCES Ranking(RankingID) ON DELETE CASCADE);
     
 CREATE TABLE Silver ( 
     RankingID VARCHAR(10) PRIMARY KEY, 
     SilverLevels VARCHAR(10), 
-    FOREIGN KEY(RankingID) REFERENCES Ranking); 
+    FOREIGN KEY(RankingID) REFERENCES Ranking(RankingID) ON DELETE CASCADE); 
     
 CREATE TABLE Gold ( 
     RankingID  VARCHAR(10) PRIMARY KEY, 
     GoldLevels VARCHAR(10),
-    FOREIGN KEY(RankingID) REFERENCES Ranking);
+    FOREIGN KEY(RankingID) REFERENCES Ranking(RankingID) ON DELETE CASCADE);
 
 
 INSERT INTO Avatar VALUES(
