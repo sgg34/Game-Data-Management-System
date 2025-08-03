@@ -36,15 +36,23 @@ router.get('/playertable', async (req, res) => {
 //     }
 // });
 
-router.post("/insert-demotable", async (req, res) => {
-    const { id, name } = req.body;
-    const insertResult = await appService.insertDemotable(id, name);
+router.post("/insertPlayertable", async (req, res) => {
+    const { id,
+        points,
+        name,
+        rank,
+        statID,
+        wins,
+        losses } = req.body;
+    const insertResult = await appService.insertPlayertable( id, points||0, name, rank, statID, wins||0, losses||0 );
     if (insertResult) {
         res.json({ success: true });
     } else {
         res.status(500).json({ success: false });
     }
 });
+
+
 
 router.post("/update-name-demotable", async (req, res) => {
     const { oldName, newName } = req.body;

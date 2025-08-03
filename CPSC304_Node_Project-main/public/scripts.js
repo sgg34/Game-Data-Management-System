@@ -106,20 +106,30 @@ async function resetDemotable() {
 }
 
 // Inserts new records into the demotable.
-async function insertDemotable(event) {
+async function insertPlayertable(event) {
     event.preventDefault();
 
-    const idValue = document.getElementById('insertId').value;
+    const idValue = document.getElementById('insertId').value;    
+    const pointsValue = document.getElementById('insertPoints').value;
     const nameValue = document.getElementById('insertName').value;
+    const rankValue = document.getElementById('insertRank').value;
+    const statValue = document.getElementById('insertStatID').value;
+    const winValue = document.getElementById('insertWins').value;
+    const lossValue = document.getElementById('insertLosses').value;
 
-    const response = await fetch('/insert-demotable', {
+    const response = await fetch('/insertPlayertable', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             id: idValue,
-            name: nameValue
+            points: pointsValue,
+            name: nameValue,
+            rank: rankValue,
+            statID: statValue,
+            wins: winValue,
+            losses: lossValue
         })
     });
 
@@ -130,7 +140,7 @@ async function insertDemotable(event) {
         messageElement.textContent = "Data inserted successfully!";
         fetchTableData();
     } else {
-        messageElement.textContent = "Error inserting data!";
+        messageElement.textContent = "Error inserting data! Make sure to choose your RankingID from the table above. PlayerID and StatID should also be unique.";
     }
 }
 
@@ -188,8 +198,8 @@ async function countDemotable() {
 window.onload = function() {
     checkDbConnection();
     fetchTableData();
-    document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
-    document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
+    //document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
+    document.getElementById("insertPlayertable").addEventListener("submit", insertPlayertable);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };

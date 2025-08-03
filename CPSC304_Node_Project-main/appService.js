@@ -120,11 +120,11 @@ async function fetchRankingtableFromDb() {
 //     });
 // }
 
-async function insertDemotable(id, name) {
+async function insertPlayertable(id, points, name, rank, statID, wins, losses ) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (id, name) VALUES (:id, :name)`,
-            [id, name],
+            `INSERT INTO Player_Has_R1 VALUES (:id, :points, :name, :rank, :statID, :wins, :losses )`,
+            [id, points, name, rank, statID, wins, losses],
             { autoCommit: true }
         );
 
@@ -162,7 +162,7 @@ module.exports = {
     fetchPlayertableFromDb,
     fetchRankingtableFromDb,
     //initiateDemotable, 
-    insertDemotable, 
+    insertPlayertable, 
     updateNameDemotable, 
     countDemotable
 };

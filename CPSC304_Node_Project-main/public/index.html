@@ -62,19 +62,35 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-
+<!-- 
     <h2>Reset Demotable</h2>
     <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
-    <button id="resetDemotable"> reset </button> <br>
+    <button id="resetDemotable"> reset </button> <br> -->
     <!-- A placeholder to display messages related to the reset operation. -->
-    <div id="resetResultMsg"></div>
+    <!-- <div id="resetResultMsg"></div>
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><hr><br> ========================================================================= 
+-->
 
     <h2> Insert Values into DemoTable </h2>
-    <form id="insertDemotable">
-        ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>
-        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>
+    <!-- PlayerID CHAR(10) PRIMARY KEY, 
+    Points INTEGER, 
+    Username VARCHAR(20), 
+    RankingID CHAR(10) NOT NULL, 
+    StatID CHAR(10) NOT NULL, 
+    Wins INTEGER, 
+    Losses INTEGER, 
+    UNIQUE (StatID), 
+    FOREIGN KEY ( RankingID ) REFERENCES Ranking) -->
+    <form id="insertPlayertable">
+        PlayerID: <input type="text" id="insertId" placeholder="Enter ID" maxlength="10" required> <br><br>
+        Points:<input type="number" id="insertPoints" placeholder="Enter Points"> <br><br>
+        Username: <input type="text" id="insertName" placeholder="Enter Username" maxlength="20"> <br><br>
+        RankingID: <input type="text" id="insertRank" placeholder="Enter RankingID" required> <br><br>
+        statID: <input type="text" id="insertStatID" placeholder="Enter StatID" maxlength="10" required> <br><br>
+        Wins:<input type="number" id="insertWins" placeholder="Enter Wins"> <br><br>
+        Losses:<input type="number" id="insertLosses" placeholder="Enter Losses"> <br><br>
+        
 
         <button type="submit"> insert </button> <br>
     </form>

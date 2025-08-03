@@ -48,14 +48,14 @@ CREATE TABLE Avatar (
     Profile VARCHAR(200));
 
 CREATE TABLE Ranking ( 
-    RankingID CHAR(10) PRIMARY KEY); 
+    RankingID VARCHAR(10) PRIMARY KEY); 
 
 CREATE TABLE Player_Has_R1 (
-    PlayerID CHAR(10) PRIMARY KEY, 
+    PlayerID VARCHAR(10) PRIMARY KEY, 
     Points INTEGER, 
     Username VARCHAR(20), 
-    RankingID CHAR(10) NOT NULL, 
-    StatID CHAR(10) NOT NULL, 
+    RankingID VARCHAR(10) NOT NULL, 
+    StatID VARCHAR(10) NOT NULL, 
     Wins INTEGER, 
     Losses INTEGER, 
     UNIQUE (StatID), 
@@ -227,6 +227,9 @@ INSERT INTO Player_Has_R1 VALUES ('A000000005', 180, 'DragonX', 'RB00000003', 'S
 INSERT INTO Player_Has_R1 VALUES ('A000000006', 120, 'BlitzQueen', 'RI00000003', 'S000000006', 8, 8); 
 INSERT INTO Player_Has_R1 VALUES ('A000000007', 90, 'SilentScope', 'RI00000004', 'S000000007', 2, 5); 
 INSERT INTO Player_Has_R1 VALUES ('A000000008', 200, 'SkyBreaker', 'RS00000002', 'S000000008', 11, 5); 
+
+INSERT INTO Player_Has_R1 VALUES ('A000000009', 210, 'Yuyu', 'RS00000005', 'S000000009', 11, 1); 
+
 
 INSERT INTO Player_Has_Avatar VALUES ('Sammie', 'A000000001'); 
 INSERT INTO Player_Has_Avatar VALUES ('Damien', 'A000000002'); 
