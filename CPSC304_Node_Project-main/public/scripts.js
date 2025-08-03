@@ -38,6 +38,29 @@ async function checkDbConnection() {
 
 // Fetches data from the Ranking table and displays it.
 async function fetchAndDisplayRanking() {
+    const statusElem = document.getElementById('dbStatus');
+    const loadingGifElem = document.getElementById('loadingGif');
+
+    const response = await fetch('/check-db-connection', {
+        method: "GET"
+    });
+
+    // Hide the loading GIF once the response is received.
+    loadingGifElem.style.display = 'none';
+    // Display the statusElem's text in the placeholder.
+    statusElem.style.display = 'inline';
+
+    response.text()
+    .then((text) => {
+        statusElem.textContent = text;
+    })
+    .catch((error) => {
+        statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
+    });
+}
+
+// Fetches data from the Ranking table and displays it.
+async function fetchAndDisplayRanking() {
     const tableElement = document.getElementById('rankingtable');
     const tableBody = tableElement.querySelector('tbody');
 
@@ -59,6 +82,38 @@ async function fetchAndDisplayRanking() {
             const cell = row.insertCell(index);
             cell.textContent = field;
         });
+
+
+        // Add Delete button cell at the end
+        const deleteCell = row.insertCell();
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+
+        const rankingId = user[0];
+        deleteBtn.onclick = async () => {
+            if (!confirm(`Are you sure you want to delete RankingID ${rankingId}?`)) {
+                return;
+            }
+
+            try {
+                const deleteResponse = await fetch(`/rankingtable/${rankingId}`, {
+                    method: 'DELETE',
+                });
+
+            if (!deleteResponse.ok) {
+                const errorText = await deleteResponse.text();
+                throw new Error(errorText || 'Failed to delete ranking');
+                }
+            
+
+            fetchAndDisplayRanking();
+            } catch (error) {
+                alert(`Error deleting ranking: ${error.message}`);
+                console.error(error);
+            }
+        };
+
+        deleteCell.appendChild(deleteBtn);
     });
 }
 
