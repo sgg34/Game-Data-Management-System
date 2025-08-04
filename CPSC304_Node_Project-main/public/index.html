@@ -175,6 +175,12 @@
 
 <br><hr><br> <!-- ========================================================================= -->
 
+<h2>Player Max Wins Grouped by Ranking Where Group Has More Than 1 Player</h2>
+<button id="maxWinByRankingBtn">Max Wins of Players by Ranking where Group Has More Than 1 Player </button><br><br>
+<div id="maxWinByRankingMsg"></div><br>
+
+<br><hr><br> <!-- ========================================================================= -->
+
     <h2>Dynamic SQL Projection</h2>
 
     <!-- Table selector -->
@@ -196,6 +202,26 @@
         </thead>
         <tbody id="projectionTableBody"></tbody>
     </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+    
+    <h2>Join Query: Players with More Than X Points</h2>
+    <label for="minPointsInput">Enter minimum points:</label>
+    <input type="number" id="minPointsInput" />
+    <button onclick="runJoinQuery()">Search</button>
+
+    <table id="joinResultsTable" border="1" style="margin-top: 10px;">
+        <thead>
+            <tr>
+                <th>Avatar Name</th>
+                <th>Player ID</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->

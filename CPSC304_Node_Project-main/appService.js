@@ -269,6 +269,34 @@ async function projectAttributes(tableName, attributes) {
     });
 }
 
+async function runJoinQuery(minPoints) {
+    const connection = await oracledb.getConnection();
+
+    const result = await connection.execute(
+        `SELECT pha.AvatarName, phr.PlayerID, phr.Points
+         FROM Player_Has_R1 phr
+         JOIN Player_Has_Avatar pha ON phr.PlayerID = pha.PlayerID
+         WHERE phr.Points > :minPoints`,
+        [minPoints],
+        { outFormat: oracledb.OBJECT }
+    );
+
+    await connection.close();
+    return result.rows;
+}
+
+async function maxWinByRanking() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT RankingID, Max(Wins) FROM Player_Has_R1 GROUP BY RankingID HAVING COUNT(*)>1 ORDER BY RankingID`
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+
 module.exports = {
     testOracleConnection,
     fetchPlayertableFromDb,
@@ -286,6 +314,10 @@ module.exports = {
 
     getAllTables,
     getColumnsForTable,
-    projectAttributes
+    projectAttributes,
+
+    runJoinQuery,
+
+    maxWinByRanking
     
 };

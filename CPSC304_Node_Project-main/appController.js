@@ -159,5 +159,27 @@ router.get("/projection/tables", async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   });
+
+  // Route to get the minimum point typed by the user for join query
+  router.get('/joinQuery', async (req, res) => {
+    const { minPoints } = req.query;
+
+    try {
+        const result = await appService.runJoinQuery(minPoints);
+        res.json(result);
+        } catch (error) {
+            console.error("Join query failed:", error);
+            res.status(500).json({ message: "Server error", error });
+        }
+    });
+
+    router.get('/maxWinByRankingBtn', async (req, res) => {
+    const maxWin = await appService.maxWinByRanking();
+    if (maxWin.length > 0) {
+        res.json({ success: true, data: maxWin });
+    } else {
+        res.status(500).json({ success: false });
+    }
+    });
   
 module.exports = router;

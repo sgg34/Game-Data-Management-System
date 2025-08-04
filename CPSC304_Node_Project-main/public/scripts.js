@@ -78,8 +78,13 @@ async function fetchAndDisplayRanking() {
                     method: 'DELETE',
                 });
 
-            if (!deleteResponse.ok) {
+            if (deleteResponse.ok) {
+                alert('Entry deleted successfully.');
+            }
+
+            else if (!deleteResponse.ok) {
                 const errorText = await deleteResponse.text();
+                alert('Failed to delete entry.');
                 throw new Error(errorText || 'Failed to delete ranking');
                 }
             
@@ -451,6 +456,72 @@ async function fetchProjectedData(event) {
         body.appendChild(tr);
     });
 }
+
+// Join Query
+async function runJoinQuery() {
+    const minPoints = document.getElementById('minPointsInput').value;
+    if (!minPoints || isNaN(minPoints)) {
+        alert("Please enter a valid number.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/joinQuery?minPoints=${minPoints}`);
+        const data = await response.json();
+
+        const tbody = document.querySelector('#joinResultsTable tbody');
+        tbody.innerHTML = ''; // clear previous results
+
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3">No results found.</td></tr>';
+            return;
+        }
+
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row.AVATARNAME}</td>
+                <td>${row.PLAYERID}</td>
+                <td>${row.POINTS}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch (error) {
+        console.error('Error running join query:', error);
+        alert("An error occurred while fetching data.");
+    }
+}
+
+
+
+async function maxWinByRanking() {
+    const response = await fetch("/maxWinByRankingBtn", {
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById("maxWinByRankingMsg");
+
+    if (responseData.success) {
+        const results = responseData.data;
+        if (results.length === 0) {
+            messageElement.textContent = "No data found or satisfy the condition.";
+            return;
+        }
+
+        let html = "<table border='1'><tr><th>RankingID</th><th>Max Wins of Players</th></tr>";
+        for (const row of results) {
+            html += `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`;
+        }
+        html += "</table>";
+        messageElement.innerHTML = html;
+    } else {
+        messageElement.textContent = "No data found satisfy the condition!";
+    }
+}
+
+
+
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -466,9 +537,11 @@ window.onload = function() {
     document.getElementById("update-win-loss-playertable").addEventListener("submit", updateWinLossPlayertable);
    
     document.getElementById("countPlayersByRankingBtn").addEventListener("click", countPlayersByRanking);
-
+    document.getElementById("maxWinByRankingBtn").addEventListener("click", maxWinByRanking);
    // document.getElementById("countPlayertable").addEventListener("click", countPlayertable);
 };
+
+
 
 // General function to refresh the displayed table data. 
 // You can invoke this after any table-modifying operation to keep consistency.
