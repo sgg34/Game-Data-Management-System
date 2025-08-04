@@ -260,6 +260,11 @@
 
     <div id="filters">
         <div class="filter">
+            <select class="logical">
+                <option value="AND">AND</option>
+                <option value="OR">OR</option>
+            </select>
+
             <select class="attribute">
                 <option value="Points">Points</option>
                 <option value="Wins">Wins</option>
@@ -277,10 +282,7 @@
 
             <input type="number" class="value" placeholder="Value" />
 
-            <select class="logical">
-                <option value="AND">AND</option>
-                <option value="OR">OR</option>
-            </select>
+            
 
             <button class="remove-filter" onclick="removeFilter(this)">Delete</button>
         </div>
