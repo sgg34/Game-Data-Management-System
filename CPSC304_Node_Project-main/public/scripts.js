@@ -520,6 +520,31 @@ async function maxWinByRanking() {
     }
 }
 
+async function runDivisionQuery() {
+    try {
+        const response = await fetch('/divisionQuery');
+        const data = await response.json();
+
+        const tbody = document.querySelector('#divisionResultsTable tbody');
+        tbody.innerHTML = '';
+
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td>No players found.</td></tr>';
+            return;
+        }
+
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${row.PLAYERID}</td>`;
+            tbody.appendChild(tr);
+        });
+    } catch (error) {
+        console.error('Error running division query:', error);
+        alert('An error occurred while fetching division query results.');
+    }
+}
+
+
 
 
 // ---------------------------------------------------------------

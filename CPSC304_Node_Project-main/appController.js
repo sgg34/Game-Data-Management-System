@@ -181,5 +181,16 @@ router.get("/projection/tables", async (req, res) => {
         res.status(500).json({ success: false });
     }
     });
+
+    // Route for Division Query
+    router.get('/divisionQuery', async (req, res) => {
+        try {
+            const result = await appService.runDivisionQuery();
+            res.json(result);
+        } catch (error) {
+            console.error("Division query failed:", error);
+            res.status(500).json({ message: "Server error", error });
+        }
+    });
   
 module.exports = router;

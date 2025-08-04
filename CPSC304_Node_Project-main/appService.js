@@ -296,6 +296,23 @@ async function maxWinByRanking() {
     });
 }
 
+async function runDivisionQuery() {
+    const connection = await oracledb.getConnection();
+
+    const result = await connection.execute(
+        `SELECT pha.PlayerID
+         FROM Player_Has_Avatar pha
+         GROUP BY pha.PlayerID
+         HAVING COUNT(DISTINCT pha.AvatarName) = (SELECT COUNT(*) FROM Avatar)`,
+        [],
+        { outFormat: oracledb.OBJECT }
+    );
+
+    await connection.close();
+    return result.rows;
+}
+
+
 
 module.exports = {
     testOracleConnection,
@@ -318,6 +335,8 @@ module.exports = {
 
     runJoinQuery,
 
-    maxWinByRanking
+    maxWinByRanking,
+
+    runDivisionQuery
     
 };
