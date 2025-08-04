@@ -26,6 +26,11 @@ router.get('/playertable', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/avgPointstable', async (req, res) => {
+    const tableContent = await appService.fetchAvgPointsViewFromDb();
+    res.json({data: tableContent});
+});
+
 
 // router.post("/initiate-playertable", async (req, res) => {
 //     const initiateResult = await appService.initiateDemotable();
@@ -182,6 +187,15 @@ router.get("/projection/tables", async (req, res) => {
     }
     });
 
+    router.get('/maxAvgPointsBtn', async (req, res) => {
+        const maxAvgPoints = await appService.maxAvgPointsByRanking();
+        if (maxAvgPoints.length > 0) {
+            res.json({ success: true, data: maxAvgPoints });
+        } else {
+            res.status(500).json({ success: false });
+        }
+    });
+
     // Route for Division Query
     router.get('/divisionQuery', async (req, res) => {
         try {
@@ -192,6 +206,7 @@ router.get("/projection/tables", async (req, res) => {
             res.status(500).json({ message: "Server error", error });
         }
     });
+  
 
     // Router for Selection Query
     router.post('/selectionQuery', async (req, res) => {
@@ -204,6 +219,5 @@ router.get("/projection/tables", async (req, res) => {
             res.status(500).json({ message: 'Server error', error: err });
         }
     });
-
-  
+    
 module.exports = router;

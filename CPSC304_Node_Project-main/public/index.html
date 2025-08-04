@@ -181,7 +181,26 @@
 
 <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Projection Query: Any tables with any attributes</h2>
+<h2>Max(Avg(Points of Players Grouped by Ranking))</h2>
+<h3>Show Avg Points By Ranking View</h3>
+    <table id="avgPointstable" border="1">
+        <thead>
+            <tr>
+                <th>RankingID</th>
+                <th>AvgPoints</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+<br>
+<br>
+<button id="maxAvgPointsBtn">Max of Average Points of Players by Ranking </button><br><br>
+<div id="maxAvgPointsMsg"></div><br>
+
+<br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Dynamic SQL Projection</h2>
 
     <!-- Table selector -->
     <label for="tableSelect">Choose a table:</label>
@@ -205,7 +224,7 @@
 
     <br><hr><br> <!-- ========================================================================= -->
     
-    <h2>Join Query: Player_Has_R1 Join Player_Has_Avatar with More Than X Points</h2>
+    <h2>Join Query: Players Join Avatars with More Than X Points</h2>
     <label for="minPointsInput">Enter minimum points:</label>
     <input type="number" id="minPointsInput" />
     <button onclick="runJoinQuery()">Search</button>
@@ -234,6 +253,7 @@
         </thead>
         <tbody></tbody>
     </table>
+
 
     <br><hr><br> <!-- ========================================================================= -->
     <h2>Selection Query: Filter Players</h2>
@@ -283,7 +303,6 @@
         </thead>
         <tbody></tbody>
     </table>
-
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->

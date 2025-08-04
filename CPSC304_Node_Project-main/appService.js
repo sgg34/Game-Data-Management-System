@@ -78,7 +78,7 @@ async function testOracleConnection() {
 
 async function fetchPlayertableFromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM Player_Has_R1');
+        const result = await connection.execute('SELECT * FROM Player_Has_R1 ORDER BY RankingID');
         return result.rows;
     }).catch(() => {
         return [];
@@ -87,13 +87,22 @@ async function fetchPlayertableFromDb() {
 
 async function fetchRankingtableFromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM Ranking');
+        const result = await connection.execute('SELECT * FROM Ranking ORDER BY RankingID');
         return result.rows;
     }).catch(() => {
         return [];
     });
 }
 
+
+async function fetchAvgPointsViewFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM AvgPointsByRanking ORDER BY RankingID');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
 // async function initiateDemotable() {
 //     return await withOracleDB(async (connection) => {
 //         try {
@@ -296,6 +305,20 @@ async function maxWinByRanking() {
     });
 }
 
+async function maxAvgPointsByRanking() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT rankingID, avgpoints
+            FROM AvgPointsByRanking
+            WHERE avgpoints = (SELECT MAX(avgpoints) FROM AvgPointsByRanking)`
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+
 async function runDivisionQuery() {
     const connection = await oracledb.getConnection();
 
@@ -311,6 +334,7 @@ async function runDivisionQuery() {
     await connection.close();
     return result.rows;
 }
+
 
 async function runSelectionQuery(conditions) {
     const connection = await oracledb.getConnection();
@@ -346,9 +370,6 @@ async function runSelectionQuery(conditions) {
     return result.rows;
 }
 
-
-
-
 module.exports = {
     testOracleConnection,
     fetchPlayertableFromDb,
@@ -374,6 +395,9 @@ module.exports = {
 
     runDivisionQuery,
 
+    maxAvgPointsByRanking,
+    fetchAvgPointsViewFromDb,
+    
     runSelectionQuery
     
 };

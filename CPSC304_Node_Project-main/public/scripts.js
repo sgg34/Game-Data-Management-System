@@ -127,6 +127,34 @@ async function fetchAndDisplayUsers() {
     });
 }
 
+
+// Fetches data from the  and displays it.
+async function fetchAndDisplayAvgPoints() {
+    const tableElement = document.getElementById('avgPointstable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/avgPointstable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const avgPointstableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    avgPointstableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+
 // This function resets or initializes the demotable.
 async function resetDemotable() {
     const response = await fetch("/initiate-demotable", {
@@ -520,6 +548,34 @@ async function maxWinByRanking() {
     }
 }
 
+async function maxAvgPointsByRanking() {
+    const response = await fetch("/maxAvgPointsBtn", {
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById("maxAvgPointsMsg");
+
+    if (responseData.success) {
+        const results = responseData.data;
+        if (results.length === 0) {
+            messageElement.textContent = "No data found.";
+            return;
+        }
+
+        let html = "<table border='1'><tr><th>RankingID</th><th>Max Average Points of Players by Ranking</th></tr>";
+        for (const row of results) {
+            html += `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`;
+        }
+        html += "</table>";
+        messageElement.innerHTML = html;
+    } else {
+        messageElement.textContent = "No data found!";
+    }
+}
+
+
+
 async function runDivisionQuery() {
     try {
         const response = await fetch('/divisionQuery');
@@ -644,6 +700,8 @@ window.onload = function() {
    
     document.getElementById("countPlayersByRankingBtn").addEventListener("click", countPlayersByRanking);
     document.getElementById("maxWinByRankingBtn").addEventListener("click", maxWinByRanking);
+    document.getElementById("maxAvgPointsBtn").addEventListener("click", maxAvgPointsByRanking);
+    
    // document.getElementById("countPlayertable").addEventListener("click", countPlayertable);
 };
 
@@ -654,4 +712,5 @@ window.onload = function() {
 function fetchTableData() {
     fetchAndDisplayRanking();
     fetchAndDisplayUsers();
+    fetchAndDisplayAvgPoints();
 }
