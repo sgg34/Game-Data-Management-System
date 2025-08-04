@@ -545,7 +545,88 @@ async function runDivisionQuery() {
 }
 
 
+// Selection Query
+function addFilter() {
+    const filtersDiv = document.getElementById('filters');
+    const newFilter = filtersDiv.firstElementChild.cloneNode(true);
 
+    // Reset values
+    newFilter.querySelector('.value').value = '';
+
+    // Reattach remove button handler
+    newFilter.querySelector('.remove-filter').onclick = function () {
+        removeFilter(this);
+    };
+    
+    filtersDiv.appendChild(newFilter);
+}
+
+async function runSelectionQuery() {
+    const filters = Array.from(document.querySelectorAll('#filters .filter'));
+    const conditions = [];
+
+    for (const filter of filters) {
+        const attr = filter.querySelector('.attribute').value;
+        const op = filter.querySelector('.operator').value;
+        const val = filter.querySelector('.value').value;
+        const logic = filter.querySelector('.logical').value;
+
+        if (!val) continue;
+
+        conditions.push({ attr, op, val, logic });
+    }
+
+    if (conditions.length === 0) {
+        alert('Please enter at least one condition.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/selectionQuery', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ conditions })
+        });
+
+        const data = await response.json();
+        const tbody = document.querySelector('#selectionResultsTable tbody');
+        tbody.innerHTML = '';
+
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7">No results found.</td></tr>';
+            return;
+        }
+
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row.PLAYERID}</td>
+                <td>${row.USERNAME}</td>
+                <td>${row.POINTS}</td>
+                <td>${row.WINS}</td>
+                <td>${row.LOSSES}</td>
+                <td>${row.RANKINGID}</td>
+                <td>${row.STATID}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch (err) {
+        console.error('Error in selection query:', err);
+        alert('Something went wrong while filtering.');
+    }
+}
+
+function removeFilter(button) {
+    const filter = button.parentElement;
+    const filtersDiv = document.getElementById('filters');
+
+    // Only remove if there's more than one filter
+    if (filtersDiv.children.length > 1) {
+        filtersDiv.removeChild(filter);
+    } else {
+        alert("At least one filter row is required.");
+    }
+}
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.

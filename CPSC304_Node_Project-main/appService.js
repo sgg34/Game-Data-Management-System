@@ -312,6 +312,41 @@ async function runDivisionQuery() {
     return result.rows;
 }
 
+async function runSelectionQuery(conditions) {
+    const connection = await oracledb.getConnection();
+
+    let query = 'SELECT * FROM Player_Has_R1';
+    const binds = [];
+    let whereClauses = [];
+
+    for (let i = 0; i < conditions.length; i++) {
+        const { attr, op, val, logic } = conditions[i];
+
+        const clause = `${attr} ${op} :val${i}`;
+        binds.push(Number(val));
+
+        if (i > 0) {
+            whereClauses.push(` ${logic} ${clause}`);
+        } else {
+            whereClauses.push(clause);
+        }
+    }
+
+    if (whereClauses.length > 0) {
+        query += ' WHERE ' + whereClauses.join('');
+    }
+
+    const result = await connection.execute(
+        query,
+        binds,
+        { outFormat: oracledb.OBJECT }
+    );
+
+    await connection.close();
+    return result.rows;
+}
+
+
 
 
 module.exports = {
@@ -337,6 +372,8 @@ module.exports = {
 
     maxWinByRanking,
 
-    runDivisionQuery
+    runDivisionQuery,
+
+    runSelectionQuery
     
 };

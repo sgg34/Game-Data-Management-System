@@ -181,7 +181,7 @@
 
 <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Dynamic SQL Projection</h2>
+    <h2>Projection Query: Any tables with any attributes</h2>
 
     <!-- Table selector -->
     <label for="tableSelect">Choose a table:</label>
@@ -205,7 +205,7 @@
 
     <br><hr><br> <!-- ========================================================================= -->
     
-    <h2>Join Query: Players Join Avatars with More Than X Points</h2>
+    <h2>Join Query: Player_Has_R1 Join Player_Has_Avatar with More Than X Points</h2>
     <label for="minPointsInput">Enter minimum points:</label>
     <input type="number" id="minPointsInput" />
     <button onclick="runJoinQuery()">Search</button>
@@ -235,7 +235,54 @@
         <tbody></tbody>
     </table>
 
+    <br><hr><br> <!-- ========================================================================= -->
+    <h2>Selection Query: Filter Players</h2>
 
+    <div id="filters">
+        <div class="filter">
+            <select class="attribute">
+                <option value="Points">Points</option>
+                <option value="Wins">Wins</option>
+                <option value="Losses">Losses</option>
+            </select>
+
+            <select class="operator">
+                <option value="=">=</option>
+                <option value="!=">!=</option>
+                <option value=">">&gt;</option>
+                <option value=">=">&gt;=</option>
+                <option value="<">&lt;</option>
+                <option value="<=">&lt;=</option>
+            </select>
+
+            <input type="number" class="value" placeholder="Value" />
+
+            <select class="logical">
+                <option value="AND">AND</option>
+                <option value="OR">OR</option>
+            </select>
+
+            <button class="remove-filter" onclick="removeFilter(this)">Delete</button>
+        </div>
+    </div>
+
+    <button onclick="addFilter()">+ Add Filter</button>
+    <button onclick="runSelectionQuery()">Search</button>
+
+    <table id="selectionResultsTable" border="1" style="margin-top: 10px;">
+        <thead>
+            <tr>
+                <th>Player ID</th>
+                <th>Username</th>
+                <th>Points</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>RankingID</th>
+                <th>StatID</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
 
     <!-- ===================================================================================== -->

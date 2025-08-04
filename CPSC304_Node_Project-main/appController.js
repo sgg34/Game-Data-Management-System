@@ -192,5 +192,18 @@ router.get("/projection/tables", async (req, res) => {
             res.status(500).json({ message: "Server error", error });
         }
     });
+
+    // Router for Selection Query
+    router.post('/selectionQuery', async (req, res) => {
+        const { conditions } = req.body;
+        try {
+            const result = await appService.runSelectionQuery(conditions);
+            res.json(result);
+        } catch (err) {
+            console.error('Selection query error:', err);
+            res.status(500).json({ message: 'Server error', error: err });
+        }
+    });
+
   
 module.exports = router;
