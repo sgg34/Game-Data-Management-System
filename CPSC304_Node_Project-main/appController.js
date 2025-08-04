@@ -109,21 +109,15 @@ router.post("/update-win-loss-playertable", async (req, res) => {
 });
 
 
+router.get('/countPlayersByRankingBtn', async (req, res) => {
+    const groupedCounts = await appService.countPlayersByRanking();
+    if (groupedCounts.length > 0) {
+        res.json({ success: true, data: groupedCounts });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
 
-// router.get('/count-Playertable', async (req, res) => {
-//     const tableCount = await appService.countDemotable();
-//     if (tableCount >= 0) {
-//         res.json({ 
-//             success: true,  
-//             count: tableCount
-//         });
-//     } else {
-//         res.status(500).json({ 
-//             success: false, 
-//             count: tableCount
-//         });
-//     }
-// });
 
 router.delete("/delete-ranking/:id", async (req, res) => {
     const {id} = req.params;

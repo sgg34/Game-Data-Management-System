@@ -320,23 +320,33 @@ async function updateWinLossPlayertable(event) {
     }
 }
 
-// // Counts rows in the demotable.
-// // Modify the function accordingly if using different aggregate functions or procedures.
-// async function countPlayertable() {
-//     const response = await fetch("/countPlayertable", {
-//         method: 'GET'
-//     });
+async function countPlayersByRanking() {
+    const response = await fetch("/countPlayersByRankingBtn", {
+        method: "GET"
+    });
 
-//     const responseData = await response.json();
-//     const messageElement = document.getElementById('countResultMsg');
+    const responseData = await response.json();
+    const messageElement = document.getElementById("groupedRankingResultMsg");
 
-//     if (responseData.success) {
-//         const tupleCount = responseData.count;
-//         messageElement.textContent = `The number of tuples in players table: ${tupleCount}`;
-//     } else {
-//         alert("Error in count Players table!");
-//     }
-// }
+    if (responseData.success) {
+        const results = responseData.data;
+        if (results.length === 0) {
+            messageElement.textContent = "No data found.";
+            return;
+        }
+
+        let html = "<table border='1'><tr><th>RankingID</th><th>Number of Players</th></tr>";
+        for (const row of results) {
+            html += `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`;
+        }
+        html += "</table>";
+        messageElement.innerHTML = html;
+    } else {
+        messageElement.textContent = "Error fetching grouped count!";
+    }
+}
+
+
 // Projection
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -454,8 +464,10 @@ window.onload = function() {
     document.getElementById("update-rankingID-playertable").addEventListener("submit", updateRankingPlayertable);
     document.getElementById("update-statID-playertable").addEventListener("submit", updateStatIDPlayertable);
     document.getElementById("update-win-loss-playertable").addEventListener("submit", updateWinLossPlayertable);
+   
+    document.getElementById("countPlayersByRankingBtn").addEventListener("click", countPlayersByRanking);
 
-    document.getElementById("countPlayertable").addEventListener("click", countPlayertable);
+   // document.getElementById("countPlayertable").addEventListener("click", countPlayertable);
 };
 
 // General function to refresh the displayed table data. 

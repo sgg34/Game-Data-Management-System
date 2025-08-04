@@ -218,13 +218,14 @@ async function updateWinLossPlayertable(playerID, wins, losses) {
     });
 }
 
-
-async function countPlayertable() {
+async function countPlayersByRanking() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT Count(*) FROM Player_Has_R1');
-        return result.rows[0][0];
+        const result = await connection.execute(
+            `SELECT RankingID, COUNT(*) AS NumPlayers FROM Player_Has_R1 GROUP BY RankingID ORDER BY RankingID`
+        );
+        return result.rows;
     }).catch(() => {
-        return -1;
+        return [];
     });
 }
 
@@ -281,9 +282,10 @@ module.exports = {
     updateWinLossPlayertable,
 
     deleteRankingById,
-    countPlayertable,
+    countPlayersByRanking,
 
     getAllTables,
     getColumnsForTable,
     projectAttributes
+    
 };
