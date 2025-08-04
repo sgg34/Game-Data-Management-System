@@ -72,7 +72,7 @@
     <br><hr><br> ========================================================================= 
 -->
 
-    <h2> Insert Values into Player Table </h2>
+    <h2> Insert Values into Players Table </h2>
    
     <form id="insertPlayertable">
         PlayerID: <input type="text" id="insertId" placeholder="Enter ID" maxlength="10" required> <br><br>
@@ -90,16 +90,7 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Update Username in Player Table</h2>
-     <!-- PlayerID CHAR(10) PRIMARY KEY, 
-    Points INTEGER, 
-    Username VARCHAR(20), 
-    RankingID CHAR(10) NOT NULL, 
-    StatID CHAR(10) NOT NULL, 
-    Wins INTEGER, 
-    Losses INTEGER, 
-    UNIQUE (StatID), 
-    FOREIGN KEY ( RankingID ) REFERENCES Ranking) -->
+    <h2>Update Username in Players Table</h2>
     <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
     <p>Please enter the PlayerID first to select the tuple you want to update values with first.</p>
 
@@ -130,10 +121,87 @@
     <br><hr><br> <!-- ========================================================================= -->
 
 
-    <h2>Count the Tuples in DemoTable</h2>
-    <button id="countDemotable"> count </button> <br><br>
+    <h2>Update RankingID in Players Table</h2>
+    <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
+    <p>Please enter the PlayerID first to select the tuple you want to update values with first.</p>
+    <h4>Note: the RankingID must come from the Ranking table above</h4>
+    <form id="update-rankingID-playertable">
+        PlayerID:  <input type="text" id="UpdateRankPlayerID" placeholder="Enter PlayerID" required> <br><br>
+        New RankingID: <input type="text" id="updateNewRanking" placeholder="Enter New RankingID" maxlength="10" required> <br><br>
+
+        <button type="submit"> update </button> <br>
+    </form>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <div id="updateRankingResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Update StatID in Players Table</h2>
+   <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
+   <p>Please enter the PlayerID first to select the tuple you want to update values with first.</p>
+   <h4>Note: the StatID must be unique</h4>
+   <form id="update-statID-playertable">
+       PlayerID:  <input type="text" id="UpdateStatPlayerID" placeholder="Enter PlayerID" required> <br><br>
+       New StatID: <input type="text" id="updateNewStatID" placeholder="Enter New StatID" maxlength="10" required> <br><br>
+
+       <button type="submit"> update </button> <br>
+   </form>
+   <!-- A placeholder to display messages related to the update operation. -->
+   <div id="updateStatResultMsg"></div>
+
+   <br><hr><br> <!-- ========================================================================= -->
+
+   <h2>Update Wins and/or Losses in Players Table</h2>
+  <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
+  <p>Please enter the PlayerID first to select the tuple you want to update values with first.</p>
+  <h4>Note: If you only want to update one value, please leave the other value blank. </h4>
+
+  <form id="update-win-loss-playertable">
+      PlayerID:  <input type="text" id="UpdateWinLossPlayerID" placeholder="Enter PlayerID" required> <br><br>
+      New Wins: <input type="number" id="updateNewWins" placeholder="Enter New Wins"> <br><br>
+      New Losses: <input type="number" id="updateNewLosses" placeholder="Enter New Losses"> <br><br>
+
+      <button type="submit"> update </button> <br>
+  </form>
+  <!-- A placeholder to display messages related to the update operation. -->
+  <div id="updateWinLossResultMsg"></div>
+
+  <br><hr><br> <!-- ========================================================================= -->
+
+
+
+    <h2>Count the Tuples in Players Table</h2>
+    <button id="countPlayertable"> count </button> <br><br>
     <!-- A placeholder to display the count result. -->
     <div id="countResultMsg"></div> <br>
+
+<!-- 
+    <h2>Count of Players per Ranking</h2>
+    <button onclick="fetchRankingCounts()">Get Counts</button>
+    <div id="rankingCountsResult"></div> -->
+
+
+    <h2>Dynamic SQL Projection</h2>
+
+    <!-- Table selector -->
+    <label for="tableSelect">Choose a table:</label>
+    <select id="tableSelect">
+        <option value="">-- Select Table --</option>
+    </select>
+
+    <!-- Attribute (column) selector -->
+    <div id="columnSelectContainer" style="margin-top: 10px;"></div>
+
+    <!-- Submit button -->
+    <button id="projectButton">Submit</button>
+
+    <!-- Output table -->
+    <table id="projectionResult" border="1" style="margin-top: 20px; display: none;">
+        <thead>
+            <tr id="projectionTableHeader"></tr>
+        </thead>
+        <tbody id="projectionTableBody"></tbody>
+    </table>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->

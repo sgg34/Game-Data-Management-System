@@ -75,22 +75,55 @@ router.post("/update-points-playertable", async (req, res) => {
     }
 });
 
-
-
-router.get('/count-demotable', async (req, res) => {
-    const tableCount = await appService.countDemotable();
-    if (tableCount >= 0) {
-        res.json({ 
-            success: true,  
-            count: tableCount
-        });
+router.post("/update-rankingID-playertable", async (req, res) => {
+    const { playerID, newRanking } = req.body;
+    console.log("Received request to update ranking:", req.body);
+    const updateResult = await appService.updateRankingPlayertable(playerID, newRanking);
+    if (updateResult) {
+        res.json({ success: true });
     } else {
-        res.status(500).json({ 
-            success: false, 
-            count: tableCount
-        });
+        res.status(500).json({ success: false });
     }
 });
+
+router.post("/update-statID-playertable", async (req, res) => {
+    const { playerID, newStatID } = req.body;
+    console.log("Received request to update statID:", req.body);
+    const updateResult = await appService.updatestatIDPlayertable(playerID, newStatID);
+    if (updateResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/update-win-loss-playertable", async (req, res) => {
+    const { playerID, wins, losses } = req.body;
+    console.log("Received request to update wins/losses:", req.body);
+    const updateResult = await appService.updateWinLossPlayertable(playerID, wins, losses);
+    if (updateResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+
+
+// router.get('/count-Playertable', async (req, res) => {
+//     const tableCount = await appService.countDemotable();
+//     if (tableCount >= 0) {
+//         res.json({ 
+//             success: true,  
+//             count: tableCount
+//         });
+//     } else {
+//         res.status(500).json({ 
+//             success: false, 
+//             count: tableCount
+//         });
+//     }
+// });
 
 router.delete("/delete-ranking/:id", async (req, res) => {
     const {id} = req.params;
@@ -101,5 +134,36 @@ router.delete("/delete-ranking/:id", async (req, res) => {
         res.status(500).json({success: fail});
     }
 })
-
+// Route to get list of tables
+router.get("/projection/tables", async (req, res) => {
+    try {
+      const result = await appService.getAllTables();
+      res.json({ tables: result });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+  
+  // Route to get columns for a given table
+  router.get("/projection/columns/:tableName", async (req, res) => {
+    try {
+      const tableName = req.params.tableName.toUpperCase();
+      const result = await appService.getColumnsForTable(tableName);
+      res.json({ columns: result });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+  
+  // Route to get projected data
+  router.post("/projection/data", async (req, res) => {
+    try {
+      const { table, attributes } = req.body;
+      const result = await appService.projectAttributes(table, attributes);
+      res.json({ data: result });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+  
 module.exports = router;

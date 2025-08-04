@@ -162,14 +162,72 @@ async function updatePointsPlayertable(playerID, newPoints) {
     });
 }
 
-async function countDemotable() {
+async function updateRankingPlayertable(playerID, newRanking) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
+        const result = await connection.execute(
+            `UPDATE Player_Has_R1 SET RankingID = :newRanking WHERE PlayerID = :playerID`,
+            [newRanking, playerID],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function updatestatIDPlayertable(playerID, newStat) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `UPDATE Player_Has_R1 SET StatID = :newStat WHERE PlayerID = :playerID`,
+            [newStat, playerID],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function updateWinLossPlayertable(playerID, wins, losses) {
+    return await withOracleDB(async (connection) => {
+        let setClauses = [];
+        let binds = { playerID };
+
+        if (wins !== undefined && wins !== null && wins !== "") {
+            setClauses.push("Wins = :wins");
+            binds.wins = Number(wins);
+        }
+
+        if (losses !== undefined && losses !== null && losses !== "") {
+            setClauses.push("Losses = :losses");
+            binds.losses = Number(losses);
+        }
+
+        if (setClauses.length === 0) {
+            // Nothing to update
+            return false;
+        }
+
+        const query = `UPDATE Player_Has_R1 SET ${setClauses.join(", ")} WHERE PlayerID = :playerID`;
+
+        const result = await connection.execute(query, binds, { autoCommit: true });
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch((err) => {
+        console.error("Update failed:", err);
+        return false;
+    });
+}
+
+
+async function countPlayertable() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT Count(*) FROM Player_Has_R1');
         return result.rows[0][0];
     }).catch(() => {
         return -1;
     });
 }
+
 async function deleteRankingById(rankingId) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -181,6 +239,35 @@ async function deleteRankingById(rankingId) {
     }).catch(() => false);
 }
 
+async function getAllTables() {
+    return await withOracleDB(async (connection) => {
+        const query = `SELECT table_name FROM user_tables`;
+        const result = await connection.execute(query);
+        return result.rows.map(row => row[0]);
+    })
+}
+
+async function getColumnsForTable(tableName) {
+    return await withOracleDB(async (connection) => {
+        const query = `
+            SELECT column_name 
+            FROM user_tab_columns 
+            WHERE table_name = :tableName
+  `     ;
+        const result = await connection.execute(query, [tableName]);
+        return result.rows.map(row => row[0]);
+    });
+}
+
+async function projectAttributes(tableName, attributes) {
+    return await withOracleDB(async (connection) => {
+        const attrList = attributes.map(attr => `"${attr}"`).join(", ");
+        const query = `SELECT ${attrList} FROM "${tableName}"`;
+        const result = await connection.execute(query);
+        return result.rows;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchPlayertableFromDb,
@@ -189,6 +276,14 @@ module.exports = {
     insertPlayertable, 
     updateNamePlayertable, 
     updatePointsPlayertable, 
+    updateRankingPlayertable,
+    updatestatIDPlayertable,
+    updateWinLossPlayertable,
+
     deleteRankingById,
-    countDemotable
+    countPlayertable,
+
+    getAllTables,
+    getColumnsForTable,
+    projectAttributes
 };

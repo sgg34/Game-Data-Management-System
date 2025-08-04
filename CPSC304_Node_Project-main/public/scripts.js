@@ -201,11 +201,11 @@ async function updateNamePlayertable(event) {
         messageElement.textContent = "Name updated successfully!";
         fetchTableData();
     } else {
-        messageElement.textContent = "Error updating name!";
+        messageElement.textContent = "Error updating Username!";
     }
 }
 
-// Updates names in the demotable.
+// Updates Points in the demotable.
 async function updatePointsPlayertable(event) {
     event.preventDefault();
     const updatePlayerIDValue = document.getElementById('Update-pointsPlayerID').value;
@@ -229,32 +229,218 @@ async function updatePointsPlayertable(event) {
         messageElement.textContent = "Points updated successfully!";
         fetchTableData();
     } else {
-        messageElement.textContent = "Error updating name!";
+        messageElement.textContent = "Error updating Points!";
     }
 }
 
+// Updates RankingID in the demotable.
+async function updateRankingPlayertable(event) {
+    event.preventDefault();
+    const updatePlayerIDValue = document.getElementById('UpdateRankPlayerID').value;
+    const newRankingValue = document.getElementById('updateNewRanking').value;
 
-
-
-// Counts rows in the demotable.
-// Modify the function accordingly if using different aggregate functions or procedures.
-async function countDemotable() {
-    const response = await fetch("/count-demotable", {
-        method: 'GET'
+    const response = await fetch('/update-rankingID-playertable', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            playerID: updatePlayerIDValue,
+            newRanking: newRankingValue
+        })
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('countResultMsg');
+    const messageElement = document.getElementById('updateRankingResultMsg');
 
     if (responseData.success) {
-        const tupleCount = responseData.count;
-        messageElement.textContent = `The number of tuples in demotable: ${tupleCount}`;
+        messageElement.textContent = "RankingID updated successfully!";
+        fetchTableData();
     } else {
-        alert("Error in count demotable!");
+        messageElement.textContent = "Error updating Ranking! Please make sure the RankingID comes from the above Ranking table.";
     }
 }
 
 
+// Updates StatID in the demotable.
+async function updateStatIDPlayertable(event) {
+    event.preventDefault();
+    const updatePlayerIDValue = document.getElementById('UpdateStatPlayerID').value;
+    const newStatValue = document.getElementById('updateNewStatID').value;
+
+    const response = await fetch('/update-statID-playertable', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            playerID: updatePlayerIDValue,
+            newStatID: newStatValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('updateStatResultMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "StatID updated successfully!";
+        fetchTableData();
+    } else {
+        messageElement.textContent = "Error updating StatID! Please make sure the StatID is unique.";
+    }
+}
+
+// Updates Wins and/or Losses in the demotable.
+async function updateWinLossPlayertable(event) {
+    event.preventDefault();
+    const updatePlayerIDValue = document.getElementById('UpdateWinLossPlayerID').value;
+    const newWins = document.getElementById('updateNewWins').value;
+    const newLosses = document.getElementById('updateNewLosses').value;
+
+    const response = await fetch('/update-win-loss-playertable', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            playerID: updatePlayerIDValue,
+            wins: newWins,
+            losses: newLosses
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('updateWinLossResultMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "Wins and/or Losses updated successfully!";
+        fetchTableData();
+    } else {
+        messageElement.textContent = "Error updating Wins and/or Losses!";
+    }
+}
+
+// // Counts rows in the demotable.
+// // Modify the function accordingly if using different aggregate functions or procedures.
+// async function countPlayertable() {
+//     const response = await fetch("/countPlayertable", {
+//         method: 'GET'
+//     });
+
+//     const responseData = await response.json();
+//     const messageElement = document.getElementById('countResultMsg');
+
+//     if (responseData.success) {
+//         const tupleCount = responseData.count;
+//         messageElement.textContent = `The number of tuples in players table: ${tupleCount}`;
+//     } else {
+//         alert("Error in count Players table!");
+//     }
+// }
+// Projection
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadTablesForProjection();
+    document.getElementById('tableSelect').addEventListener('change', handleTableChange);
+    document.getElementById('projectButton').addEventListener('click', fetchProjectedData);
+});
+
+// Load table names
+async function loadTablesForProjection() {
+    const response = await fetch('/projection/tables');
+    const data = await response.json();
+    const tableSelect = document.getElementById('tableSelect');
+
+    data.tables.forEach(table => {
+        const option = document.createElement('option');
+        option.value = table;
+        option.textContent = table;
+        tableSelect.appendChild(option);
+    });
+}
+
+// Load columns when a table is selected
+async function handleTableChange(event) {
+    const tableName = event.target.value;
+    const response = await fetch(`/projection/columns/${tableName}`);
+    const data = await response.json();
+    const container = document.getElementById('columnSelectContainer');
+
+    container.innerHTML = '<strong>Select columns:</strong><br>';
+    data.columns.forEach(column => {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'columns';
+        checkbox.value = column;
+
+        const label = document.createElement('label');
+        label.textContent = column;
+
+        checkbox.addEventListener('change', updateProjectButtonState);
+
+        container.appendChild(checkbox);
+        container.appendChild(label);
+        container.appendChild(document.createElement('br'));
+    });
+}
+
+// Update the submit button
+function updateProjectButtonState() {
+    const selected = document.querySelectorAll('input[name="columns"]:checked').length > 0;
+    document.getElementById('projectButton').disabled = !selected;
+}
+
+// Fetch and display projected data
+async function fetchProjectedData(event) {
+    event.preventDefault();
+
+    const tableName = document.getElementById('tableSelect').value;
+    const selectedColumns = Array.from(document.querySelectorAll('input[name="columns"]:checked')).map(cb => cb.value);
+
+    if (!tableName || selectedColumns.length === 0) {
+        alert("Please select a table and at least one column.");
+        return;
+    }
+
+    const response = await fetch('/projection/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            table: tableName,
+            attributes: selectedColumns
+        })
+    });
+
+    // const query = `/projection/data?table=${encodeURIComponent(tableName)}&columns=${encodeURIComponent(selectedColumns.join(','))}`;
+    // const response = await fetch(query);
+    const data = await response.json();
+    
+    document.getElementById('projectionResult').style.display = 'table';
+    const headerRow = document.getElementById('projectionTableHeader');
+    const body = document.getElementById('projectionTableBody');
+    headerRow.innerHTML = '';
+    body.innerHTML = '';
+
+    // Create header
+    selectedColumns.forEach(col => {
+        const th = document.createElement('th');
+        th.textContent = col;
+        headerRow.appendChild(th);
+    });
+
+    // Create rows
+    data.data.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            tr.appendChild(td);
+        });
+        body.appendChild(tr);
+    });
+}
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -265,8 +451,11 @@ window.onload = function() {
     document.getElementById("insertPlayertable").addEventListener("submit", insertPlayertable);
     document.getElementById("update-name-playertable").addEventListener("submit", updateNamePlayertable);
     document.getElementById("update-points-playertable").addEventListener("submit", updatePointsPlayertable);
+    document.getElementById("update-rankingID-playertable").addEventListener("submit", updateRankingPlayertable);
+    document.getElementById("update-statID-playertable").addEventListener("submit", updateStatIDPlayertable);
+    document.getElementById("update-win-loss-playertable").addEventListener("submit", updateWinLossPlayertable);
 
-    document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    document.getElementById("countPlayertable").addEventListener("click", countPlayertable);
 };
 
 // General function to refresh the displayed table data. 
