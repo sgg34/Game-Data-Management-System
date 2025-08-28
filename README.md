@@ -4,5 +4,3 @@
 # Challenges/Things Left to do
 - Queries: INSERT, Delete, Update, Selection, Projection, Join, Aggregation with Group By, Aggregation with Having, Nested Aggregation with GroupBy and Division
 - GUI design for the queries
-- It is our first time using SQL and Oracle, so we will try to work back and forth with implementing queries and GUI.
-- We are also unfamiliar with libraries that might be useful for GUI. 
